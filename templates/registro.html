@@ -1,44 +1,189 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Cuenta | CyberGuard</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 320px; }
-        h1 { color: #1a2a3a; text-align: center; margin-bottom: 5px; }
-        p.subtitle { text-align: center; color: #666; font-size: 14px; margin-top: 0; }
-        label { font-weight: bold; display: block; margin-top: 12px; font-size: 14px; }
-        input { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
-        button { width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; border-radius: 4px; margin-top: 20px; cursor: pointer; font-weight: bold; }
-        button:hover { background-color: #218838; }
-        .link { text-align: center; margin-top: 15px; font-size: 14px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crear cuenta | CyberGuard</title>
+
+<!-- NUEVAS FUENTES: ÚNICO CAMBIO DE DISEÑO -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="public/estilos.css">
+
+<style>
+body{margin:0;min-height:100vh;position:relative;overflow-x:hidden;font-family:'Rajdhani',sans-serif;background:radial-gradient(circle at 20% 20%,rgba(120,190,255,.45),transparent 30%),radial-gradient(circle at 80% 80%,rgba(0,75,160,.55),transparent 35%),linear-gradient(135deg,#061526,#0b2b4d,#14517e,#1d6f9f,#0b355b,#030c18);color:white}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(120,200,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(120,200,255,.07) 1px,transparent 1px);background-size:40px 40px}
+#matrix{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:.45}
+.contenedor{position:relative;z-index:5;width:min(92%,500px);margin:35px auto;padding:35px 40px;box-sizing:border-box;background:linear-gradient(145deg,rgba(3,18,35,.96),rgba(5,31,55,.94));border:1px solid rgba(70,180,255,.7);border-radius:18px;box-shadow:0 0 15px rgba(0,153,255,.35),0 0 45px rgba(0,119,255,.18),inset 0 0 25px rgba(80,190,255,.05);backdrop-filter:blur(12px);text-align:center}
+.contenedor::before{content:"";position:absolute;top:0;left:10%;width:80%;height:3px;background:linear-gradient(90deg,transparent,#42c8ff,#fff,#42c8ff,transparent);box-shadow:0 0 10px #00aaff,0 0 20px #008cff;border-radius:10px}
+.logo{display:block;width:90px;height:auto;margin:0 auto 10px;filter:drop-shadow(0 0 5px rgba(0,174,255,.7)) drop-shadow(0 0 15px rgba(0,119,255,.35))}
+
+/* Fuente Orbitron para los títulos */
+h1{font-family:'Orbitron',sans-serif;margin:5px 0;color:#dff7ff;font-size:30px;letter-spacing:4px;text-shadow:0 0 5px #72cfff,0 0 15px rgba(0,153,255,.7)}
+.subtitulo{font-family:'Rajdhani',sans-serif;margin-top:5px;margin-bottom:25px;color:#72cfff;font-size:14px;letter-spacing:1px}
+h2{font-family:'Orbitron',sans-serif;margin:10px 0;color:#fff;font-size:25px;text-shadow:0 0 8px rgba(0,174,255,.6)}
+.descripcion{color:#b8d9ed;font-size:14px;margin-bottom:25px}
+form{text-align:left}
+label{display:block;margin-top:15px;margin-bottom:7px;color:#d9f4ff;font-size:14px;font-weight:bold}
+.campo{position:relative;width:100%}
+.campo input{width:100%;box-sizing:border-box;padding:13px 15px;border:1px solid rgba(90,190,255,.5);border-radius:8px;outline:none;background:linear-gradient(145deg,rgba(2,15,29,.95),rgba(8,35,59,.95));color:#fff;font-size:14px;transition:.25s ease;box-shadow:inset 0 0 8px rgba(0,100,180,.12)}
+.campo input::placeholder{color:#7895aa}
+.campo input:focus{border-color:#39bfff;box-shadow:0 0 8px rgba(0,174,255,.5),0 0 18px rgba(0,119,255,.2);background:rgba(4,29,50,.98)}
+.password-contenedor{position:relative;width:100%}
+.password-contenedor input{width:100%;padding-right:78px;box-sizing:border-box}
+.boton-ojo{position:absolute;right:36px;top:50%;transform:translateY(-50%);border:none;background:transparent;padding:5px;margin:0;cursor:pointer;color:#72cfff;font-size:19px;line-height:1;width:auto;box-shadow:none}
+.boton-ojo:hover{background:transparent;box-shadow:none;color:#fff;transform:translateY(-50%) scale(1.1)}
+.boton-ojo:focus-visible{outline:2px solid #39bfff;border-radius:4px}
+.password-contenedor .estado,.campo .estado{position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none}
+.estado.ok{color:#00e676;text-shadow:0 0 7px rgba(0,230,118,.8)}
+.estado.error{color:#ff3333;text-shadow:0 0 7px rgba(255,51,51,.8)}
+.campo input.valido{border:2px solid #00e676;box-shadow:0 0 8px rgba(0,230,118,.25)}
+.campo input.invalido{border:2px solid #4b33ff;box-shadow:0 0 8px rgba(255,51,51,.25)}
+.ayuda{display:block;margin-top:8px;color:#9fc1d8;font-size:12px;line-height:1.5}
+.boton-registro{width:100%;margin-top:25px;padding:14px;border:1px solid #62cfff;border-radius:8px;cursor:pointer;background:linear-gradient(135deg,#087cff,#1266b0,#2389c7);color:#fff;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:bold;letter-spacing:1px;box-shadow:0 0 10px rgba(0,153,255,.45),inset 0 1px 0 rgba(255,255,255,.25);transition:.25s ease}
+.boton-registro:hover{transform:translateY(-2px);background:linear-gradient(135deg,#1491ff,#1683d0,#32a5df);box-shadow:0 0 15px rgba(0,174,255,.7),0 0 30px rgba(0,119,255,.35)}
+.boton-registro:active{transform:translateY(0)}
+.mensaje{text-align:center;min-height:20px;margin-top:15px;font-size:13px;color:#72cfff}
+.enlace{margin-top:25px;text-align:center;color:#a9c4d8;font-size:13px}
+.enlace a{color:#54c9ff;font-weight:bold;text-decoration:none;text-shadow:0 0 5px rgba(0,174,255,.5);transition:.2s ease}
+.enlace a:hover{color:#fff;text-decoration:underline;text-shadow:0 0 10px #00aaff}
+
+/* Fuente general Rajdhani en los elementos del formulario */
+input,label,button,p,small,a{font-family:'Rajdhani',sans-serif}
+
+@media(max-width:600px){.contenedor{width:94%;margin:20px auto;padding:30px 22px}h1{font-size:25px;letter-spacing:3px}h2{font-size:22px}.logo{width:75px}}
+</style>
 </head>
 <body>
-    <div class="card">
-        <h1>CYBERGUARD</h1>
-        <p class="subtitle">Protege tu mundo digital</p>
-        <h2>Crear cuenta</h2>
-        
-        <form action="/registro" method="POST">
-            <label for="nombre">Nombre completo</label>
-            <input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre" required>
+<canvas id="matrix"></canvas>
+<main class="contenedor">
+<img src="public/logo2.1.png" alt="Logo de CyberGuard" class="logo">
+<h1>CYBERGUARD</h1>
+<p class="subtitulo">Protege tu mundo digital</p>
+<h2>Crear cuenta</h2>
+<p class="descripcion">Regístrate para comenzar a aprender.</p>
 
-            <label for="usuario">Usuario</label>
-            <input type="text" id="usuario" name="usuario" placeholder="Crea un usuario" required>
+<form id="registroForm" novalidate>
+<label for="nombre">Nombre completo</label>
+<div class="campo">
+<input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre" autocomplete="name" required>
+<span class="estado" id="estadoNombre" aria-hidden="true"></span>
+</div>
 
-            <label for="correo">Correo electrónico</label>
-            <input type="email" id="correo" name="correo" placeholder="ejemplo@correo.com" required>
+<label for="usuario">Usuario</label>
+<div class="campo">
+<input type="text" id="usuario" name="usuario" placeholder="Crea un usuario" autocomplete="username" minlength="3" required>
+<span class="estado" id="estadoUsuario" aria-hidden="true"></span>
+</div>
 
-            <label for="password">Contraseña (mínimo 8 caracteres)</label>
-            <input type="password" id="password" name="password" minlength="8" placeholder="Crea una contraseña" required>
+<label for="correo">Correo electrónico</label>
+<div class="campo">
+<input type="email" id="correo" name="correo" placeholder="ejemplo@correo.com" autocomplete="email" required>
+<span class="estado" id="estadoCorreo" aria-hidden="true"></span>
+</div>
 
-            <button type="submit">Crear cuenta</button>
-        </form>
+<label for="password">Contraseña</label>
+<div class="campo password-contenedor">
+<input type="password" id="password" name="password" placeholder="Máximo 8 caracteres" autocomplete="new-password" minlength="8" maxlength="8" required>
+<button type="button" class="boton-ojo" data-target="password" aria-label="Mostrar contraseña" aria-pressed="false">👁️</button>
+<span class="estado" id="estadoPassword" aria-hidden="true"></span>
+</div>
+<small class="ayuda">Usa exactamente 8 caracteres, con al menos una letra y un número.</small>
 
-        <p class="link">¿Ya tienes cuenta? <a href="/login">Iniciar sesión</a></p>
-    </div>
+<label for="confirmarPassword">Confirmar contraseña</label>
+<div class="campo password-contenedor">
+<input type="password" id="confirmarPassword" name="confirmarPassword" placeholder="Repite tu contraseña" autocomplete="new-password" maxlength="8" required>
+<button type="button" class="boton-ojo" data-target="confirmarPassword" aria-label="Mostrar contraseña" aria-pressed="false">👁️</button>
+<span class="estado" id="estadoConfirmar" aria-hidden="true"></span>
+</div>
+
+<button type="submit" class="boton-registro">Crear cuenta</button>
+<p id="mensaje" class="mensaje" role="status" aria-live="polite"></p>
+</form>
+
+<p class="enlace">¿Ya tienes cuenta? <a href="login.html">Iniciar sesión</a></p>
+</main>
+
+<script>
+const canvas=document.getElementById("matrix");
+const ctx=canvas.getContext("2d");
+const caracteres="☆♤◇♧□☆♤◇♧□☆♤◇♧□☆♤◇♧□☆♤◇♧□☆♤◇♧□<>";
+const tamano=25;
+let columnas=0;
+let gotas=[];
+
+function ajustarCanvas(){
+const dpr=Math.min(window.devicePixelRatio||1,2);
+const ancho=window.innerWidth;
+const alto=window.innerHeight;
+canvas.width=ancho*dpr;
+canvas.height=alto*dpr;
+canvas.style.width=ancho+"px";
+canvas.style.height=alto+"px";
+ctx.setTransform(dpr,0,0,dpr,0,0);
+columnas=Math.ceil(ancho/tamano);
+gotas=Array.from({length:columnas},()=>Math.random()*-100);
+}
+
+function dibujarMatrix(){
+const ancho=window.innerWidth;
+const alto=window.innerHeight;
+ctx.clearRect(0,0,ancho,alto);
+ctx.font=tamano+"px monospace";
+
+for(let i=0;i<columnas;i++){
+const caracter=caracteres.charAt(Math.floor(Math.random()*caracteres.length));
+const x=i*tamano;
+const y=gotas[i]*tamano;
+
+if(Math.random()>.94){
+ctx.fillStyle="#ffffff";
+ctx.shadowColor="#ffffff";
+ctx.shadowBlur=10;
+}else{
+ctx.fillStyle="#72cfff";
+ctx.shadowColor="#168cff";
+ctx.shadowBlur=8;
+}
+
+ctx.fillText(caracter,x,y);
+
+if(y>alto&&Math.random()>.975)gotas[i]=0;
+gotas[i]+=.5+Math.random()*.7;
+}
+
+ctx.shadowBlur=0;
+}
+
+ajustarCanvas();
+window.addEventListener("resize",ajustarCanvas);
+
+let ultimoFrame=0;
+
+function animar(tiempo){
+if(tiempo-ultimoFrame>=40){
+dibujarMatrix();
+ultimoFrame=tiempo;
+}
+requestAnimationFrame(animar);
+}
+
+requestAnimationFrame(animar);
+</script>
+
+<script>
+document.querySelectorAll(".boton-ojo").forEach(boton=>{
+boton.addEventListener("click",function(){
+const campo=document.getElementById(this.dataset.target);
+const mostrar=campo.type==="password";
+campo.type=mostrar?"text":"password";
+this.textContent=mostrar?"🙈":"👁️";
+this.setAttribute("aria-label",mostrar?"Ocultar contraseña":"Mostrar contraseña");
+this.setAttribute("aria-pressed",String(mostrar));
+});
+});
+</script>
+
+<script src="js/registro.js"></script>
 </body>
 </html>

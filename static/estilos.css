@@ -1,0 +1,511 @@
+* {
+    box-sizing: border-box;
+}
+
+#matrix {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #087cff, #e52235);
+    z-index: -1;
+    pointer-events: none;
+}
+
+body {
+    background: linear-gradient(90deg, #087cff, #e52235);
+    color: white;
+}
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 25px 15px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family:initial;
+    background: linear-gradient(90deg, #087cff, #e52235);
+    color: #fbfaff;
+    
+}
+
+.contenedor {
+    width: 100%;
+    max-width: 420px;
+    padding: 28px;
+
+    text-align: center;
+    background: #101b2d;
+    border: 1px solid #263b59;
+    border-radius: 18px;
+
+    box-shadow: 0 0 25px rgba(0, 100, 255, 0.18);
+}
+
+/* Logo centrado y pequeño */
+.logo {
+    display: block;
+    width: 115px;
+    height: 115px;
+    object-fit: contain;
+    margin: 0 auto 10px;
+}
+
+h1 {
+    margin: 5px 0;
+    font-size: 27px;
+    letter-spacing: 2px;
+}
+
+.subtitulo {
+    margin: 5px 0 22px;
+    color: #48baff;
+    font-size: 14px;
+}
+
+h2 {
+    margin: 15px 0 8px;
+    color: #ff4545;
+    font-size: 23px;
+}
+
+.descripcion {
+    margin-bottom: 22px;
+    color: #b8c5d8;
+    font-size: 14px;
+}
+
+form {
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin: 14px 0 6px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #304764;
+    border-radius: 8px;
+
+    background: #07101f;
+    color: #ffffff;
+    font-size: 15px;
+}
+
+input:focus {
+    outline: 2px solid #168cff;
+    border-color: #168cff;
+}
+
+button {
+    width: 100%;
+    margin-top: 22px;
+    padding: 13px;
+
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #087cff, #e52235);
+
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    filter: brightness(1.12);
+}
+
+a {
+    color: #58baff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #ff4545;
+}
+
+.enlace {
+    margin-top: 22px;
+    font-size: 14px;
+}
+
+.mensaje {
+    text-align: center;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+/* Se adapta a celulares */
+@media (max-width: 480px) {
+    .contenedor {
+        padding: 22px 18px;
+    }
+
+    .logo {
+        width: 115px;
+        height: 115px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+    
+    /* ================================
+   CONFIGURACIÓN GENERAL
+================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 30px 20px;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+
+    overflow-x: hidden;
+
+    /* FONDO AZUL METÁLICO */
+    background:
+        radial-gradient(
+            ellipse at 20% 10%,
+            rgba(70, 180, 255, 0.35) 0%,
+            transparent 35%
+        ),
+        radial-gradient(
+            ellipse at 80% 90%,
+            rgba(0, 80, 180, 0.45) 0%,
+            transparent 40%
+        ),
+        linear-gradient(
+            135deg,
+            #020b16 0%,
+            #06203a 20%,
+            #0b3c63 40%,
+            #12628d 55%,
+            #0a3b61 70%,
+            #03182b 100%
+        );
+
+    background-attachment: fixed;
+}
+
+
+/* ================================
+   EFECTO METÁLICO
+================================ */
+
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            115deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.03) 35%,
+            rgba(255, 255, 255, 0.10) 50%,
+            rgba(255, 255, 255, 0.03) 65%,
+            transparent 100%
+        );
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+/* ================================
+   BRILLO AZUL
+================================ */
+
+body::after {
+    content: "";
+
+    position: fixed;
+
+    width: 500px;
+    height: 500px;
+
+    top: -250px;
+    right: -200px;
+
+    border-radius: 50%;
+
+    background: rgba(50, 180, 255, 0.12);
+
+    box-shadow:
+        0 0 80px rgba(0, 150, 255, 0.20),
+        inset 0 0 70px rgba(0, 180, 255, 0.10);
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+/* ================================
+   TARJETA
+================================ */
+
+.card {
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 8px;
+
+    width: 600px;
+    max-width: 100%;
+
+    position: relative;
+
+    z-index: 1;
+
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.45),
+        0 0 25px rgba(0, 140, 255, 0.12);
+}
+
+
+/* ================================
+   LÍNEA AZUL DE LA TARJETA
+================================ */
+
+.card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 8%;
+
+    width: 84%;
+    height: 3px;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #087cff,
+        #72cfff,
+        #087cff,
+        transparent
+    );
+
+    box-shadow:
+        0 0 10px #087cff,
+        0 0 20px rgba(8, 124, 255, 0.5);
+}
+
+
+/* ================================
+   TÍTULO
+================================ */
+
+h1 {
+    color: #123b5d;
+
+    text-align: center;
+
+    margin-top: 0;
+    margin-bottom: 5px;
+
+    font-size: 30px;
+
+    font-weight: bold;
+
+    letter-spacing: 3px;
+}
+
+
+/* ================================
+   SUBTÍTULO
+================================ */
+
+p.subtitle {
+    text-align: center;
+
+    color: #087cff;
+
+    font-size: 14px;
+
+    margin-bottom: 20px;
+
+    font-weight: bold;
+}
+
+
+/* ================================
+   INSTRUCCIONES
+================================ */
+
+.instrucciones {
+    color: #444;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    margin-bottom: 20px;
+}
+
+
+/* ================================
+   CUADROS DE LAS PREGUNTAS
+================================ */
+
+.pregunta-box {
+    background: #f8f9fa;
+
+    padding: 15px;
+
+    border-radius: 6px;
+
+    margin-bottom: 15px;
+
+    border-left: 4px solid #007bff;
+}
+
+.pregunta-box p {
+    margin-top: 0;
+    margin-bottom: 12px;
+
+    color: #222;
+}
+
+
+/* ================================
+   OPCIONES
+================================ */
+
+label {
+    display: block;
+
+    margin: 5px 0;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    color: #222;
+
+    line-height: 1.45;
+}
+
+label input {
+    cursor: pointer;
+
+    margin-right: 5px;
+}
+
+
+/* ================================
+   BOTÓN
+================================ */
+
+button {
+    width: 100%;
+
+    padding: 12px;
+
+    background: linear-gradient(
+        135deg,
+        #087cff,
+        #075dcc
+    );
+
+    color: white;
+
+    border: none;
+
+    border-radius: 4px;
+
+    margin-top: 20px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+    font-size: 16px;
+
+    box-shadow:
+        0 0 10px rgba(8, 124, 255, 0.25);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* ================================
+   BOTÓN AL PASAR EL RATÓN
+================================ */
+
+button:hover {
+    background: linear-gradient(
+        135deg,
+        #075dcc,
+        #03489e
+    );
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 0 15px rgba(8, 124, 255, 0.55),
+        0 0 25px rgba(8, 124, 255, 0.20);
+}
+
+
+/* ================================
+   OPCIONES AL PASAR EL RATÓN
+================================ */
+
+label:hover {
+    color: #087cff;
+}
+
+
+/* ================================
+   CELULARES
+================================ */
+
+@media (max-width: 650px) {
+
+    body {
+        padding: 20px 12px;
+    }
+
+    .card {
+        padding: 25px 20px;
+    }
+
+    h1 {
+        font-size: 27px;
+    }
+
+    label {
+        font-size: 13px;
+    }
+}
+}

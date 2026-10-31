@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo de Evaluación | CyberGuard</title>
+
+<style>
+*{box-sizing:border-box}
+html{min-height:100%}
+
+body{
+font-family:Arial,sans-serif;
+margin:0;
+padding:30px 20px;
+min-height:100vh;
+color:white;
+background:
+radial-gradient(circle at 15% 15%,rgba(120,190,255,.45),transparent 30%),
+radial-gradient(circle at 85% 85%,rgba(0,75,160,.55),transparent 35%),
+linear-gradient(135deg,#061526,#0b2b4d,#14517e,#1d6f9f,#0b355b,#030c18);
+}
+
+/* CUADRÍCULA */
+body:before{
+content:"";
+position:fixed;
+inset:0;
+background-image:
+linear-gradient(rgba(170,220,255,.09) 1px,transparent 1px),
+linear-gradient(90deg,rgba(170,220,255,.09) 1px,transparent 1px);
+background-size:45px 45px;
+pointer-events:none;
+z-index:0;
+opacity:.45;
+}
+
+/* PUNTOS BRILLANTES */
+.punto{
+position:fixed;
+width:6px;
+height:6px;
+border-radius:50%;
+background:#72cfff;
+box-shadow:
+0 0 8px #72cfff,
+0 0 15px #168cff,
+0 0 25px #168cff;
+z-index:2;
+animation:pulsar 2s infinite;
+}
+
+.punto1{left:18%;top:20%}
+.punto2{right:18%;top:25%;animation-delay:.5s}
+.punto3{left:15%;bottom:25%;animation-delay:1s}
+.punto4{right:15%;bottom:20%;animation-delay:1.5s}
+.punto5{left:8%;top:50%;animation-delay:.8s}
+.punto6{right:8%;top:55%;animation-delay:1.3s}
+
+.punto7{left:28%;top:8%;animation-delay:.3s}
+.punto8{right:30%;top:12%;animation-delay:1.2s}
+.punto9{left:5%;top:35%;animation-delay:1.7s}
+.punto10{right:5%;top:40%;animation-delay:.6s}
+.punto11{left:30%;bottom:10%;animation-delay:1.4s}
+.punto12{right:28%;bottom:8%;animation-delay:2s}
+
+@keyframes pulsar{
+0%,100%{
+opacity:.3;
+transform:scale(.7);
+}
+50%{
+opacity:1;
+transform:scale(1.6);
+}
+}
+
+/* TARJETA */
+.card{
+position:relative;
+z-index:5;
+background:
+linear-gradient(
+145deg,
+rgba(6,21,38,.97),
+rgba(11,43,77,.97),
+rgba(8,35,62,.97)
+);
+padding:35px;
+border-radius:14px;
+width:700px;
+max-width:100%;
+margin:0 auto;
+border:1px solid rgba(114,207,255,.55);
+box-shadow:
+0 0 25px rgba(0,120,220,.3),
+0 15px 45px rgba(0,0,0,.45),
+inset 0 0 25px rgba(0,120,200,.1);
+overflow:hidden;
+}
+
+.card:before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:3px;
+background:
+linear-gradient(
+90deg,
+transparent,
+#087cff,
+#72cfff,
+#087cff,
+transparent
+);
+box-shadow:0 0 12px #087cff;
+}
+
+h1{
+color:#eaf7ff;
+text-align:center;
+margin:5px 0;
+letter-spacing:4px;
+font-size:32px;
+text-shadow:
+0 0 8px rgba(80,190,255,.75),
+0 0 18px rgba(0,120,220,.55);
+}
+
+p.subtitle{
+text-align:center;
+color:#72cfff;
+font-size:15px;
+margin:5px 0 25px;
+text-shadow:0 0 7px rgba(80,190,255,.45);
+}
+
+.instrucciones{
+color:#d8efff;
+text-align:center;
+font-size:15px;
+line-height:1.5;
+margin-bottom:25px;
+}
+
+/* PREGUNTAS */
+.pregunta-box{
+background:
+linear-gradient(
+145deg,
+rgba(44,91,125,.95),
+rgba(61,119,155,.92)
+);
+padding:18px 20px;
+border-radius:8px;
+margin-bottom:17px;
+border:1px solid rgba(150,220,255,.5);
+border-left:4px solid #72cfff;
+box-shadow:
+0 0 12px rgba(0,140,220,.18),
+inset 0 0 12px rgba(150,220,255,.1);
+transition:.3s;
+}
+
+.pregunta-box:hover{
+border-color:#9cddff;
+border-left-color:#fff;
+box-shadow:0 0 18px rgba(80,190,255,.3);
+}
+
+.pregunta-box p{
+color:#fff;
+margin:0 0 12px;
+line-height:1.5;
+}
+
+label{
+display:block;
+margin:9px 0;
+padding:7px 8px;
+font-size:14px;
+line-height:1.4;
+color:#f0f9ff;
+cursor:pointer;
+border-radius:5px;
+transition:.25s;
+}
+
+label:hover{
+background:rgba(190,235,255,.15);
+color:#fff;
+}
+
+input[type=radio]{
+accent-color:#087cff;
+margin-right:8px;
+cursor:pointer;
+}
+
+/* BOTÓN */
+button[type=submit]{
+width:100%;
+padding:13px;
+margin-top:15px;
+background:
+linear-gradient(
+135deg,
+#0a6ea8,
+#249bd1,
+#0a5d91
+);
+color:white;
+border:1px solid #8cddff;
+border-radius:6px;
+cursor:pointer;
+font-weight:bold;
+font-size:16px;
+box-shadow:
+0 0 10px rgba(60,190,255,.3),
+inset 0 0 10px rgba(255,255,255,.08);
+transition:.3s;
+}
+
+button[type=submit]:hover{
+background:
+linear-gradient(
+135deg,
+#138bc8,
+#39b8ed,
+#0b6da5
+);
+box-shadow:0 0 18px rgba(60,190,255,.55);
+transform:translateY(-2px);
+}
+
+.seguridad{
+text-align:center;
+margin-top:20px;
+color:#9fd9f5;
+font-size:12px;
+opacity:.85;
+}
+
+/* CELULAR */
+@media(max-width:600px){
+
+body{
+padding:15px 10px;
+}
+
+.card{
+padding:25px 18px;
+border-radius:10px;
+}
+
+h1{
+font-size:25px;
+letter-spacing:3px;
+}
+
+p.subtitle{
+font-size:14px;
+}
+
+.pregunta-box{
+padding:15px;
+}
+
+label{
+font-size:13px;
+}
+
+.punto{
+width:5px;
+height:5px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<!-- 12 PUNTOS BRILLANTES -->
+
+<div class="punto punto1"></div>
+<div class="punto punto2"></div>
+<div class="punto punto3"></div>
+<div class="punto punto4"></div>
+<div class="punto punto5"></div>
+<div class="punto punto6"></div>
+<div class="punto punto7"></div>
+<div class="punto punto8"></div>
+<div class="punto punto9"></div>
+<div class="punto punto10"></div>
+<div class="punto punto11"></div>
+<div class="punto punto12"></div>
+
+<!-- TARJETA -->
+
+<div class="card">
+
+<h1>CYBERGUARD</h1>
+
+<p class="subtitle">
+Módulo de Evaluación Diagnóstica
+</p>
+
+<p class="instrucciones">
+Responde las siguientes 10 preguntas para determinar tu nivel de ciberseguridad:
+</p>
+
+<form action="/evaluacion" method="POST">
+
+<div class="pregunta-box">
+<p><b>1. ¿Qué es una contraseña segura?</b></p>
+<label><input type="radio" name="p1" value="A" required>A) Una combinación de más de 8 caracteres, números, mayúsculas, minúsculas y símbolos.</label>
+<label><input type="radio" name="p1" value="B">B) Tu fecha de nacimiento combinada con tu nombre.</label>
+<label><input type="radio" name="p1" value="C">C) Una palabra fácil de recordar como "contraseña123".</label>
+<label><input type="radio" name="p1" value="D">D) El nombre de tu mascota.</label>
+</div>
+
+<div class="pregunta-box">
+<p><b>2. ¿Qué es el "Phishing"?</b></p>
+<label><input type="radio" name="p2" value="A" required>A) Un ataque de ingeniería social para robar información personal mediante engaños.</label>
+<label><input type="radio" name="p2" value="B">B) Un tipo de deporte acuático.</label>
+<label><input type="radio" name="p2" value="C">C) Una técnica para acelerar el internet.</label>
+<label><input type="radio" name="p2" value="D">D) Un antivirus gratuito.</label>
+</div>
+
+<div class="pregunta-box">
+<p><b>3. ¿Qué función cumple un antivirus?</b></p>
+<label><input type="radio" name="p3" value="A" required>A) Detectar, bloquear y eliminar código malicioso o virus informáticos.</label>
+<label><input type="radio" name="p3" value="B">B) Aumentar la velocidad del procesador.</label>
+<label><input type="radio" name="p3" value="C">C) Crear páginas web automáticamente.</label>
+<label><input type="radio" name="p3" value="D">D) Borrar el historial del navegador.</label>
+</div>
+
+<div class="pregunta-box">
+<p><b>4. ¿Qué es la autenticación de dos factores (2FA)?</b></p>
+<label><input type="radio" name="p4" value="A" required>A) Una capa extra de seguridad que pide dos formas distintas de verificación.</label>
+<label><input type="radio" name="p4" value="B">B) Compartir tu contraseña con dos amigos de confianza.</label>
+<label><input type="radio" name="p4" value="C">C) Tener dos cuentas de correo electrónico.</label>
+<label><input type="radio" name="p4" value="D">D) Usar dos pantallas en la computadora.</label>
+</div>
+
+<div class="pregunta-box">
+<p><b>5. ¿Qué es el ransomware?</b></p>
+<label><input type="radio" name="p5" value="A" required>A) Un malware que cifra tus archivos y exige un rescate económico para recuperarlos.</label>
+<label><input type="radio" name="p5" value="B">B) Un programa de diseño gráfico.</label>
+<label><input type="radio" name="p5" value="C">C) Un sistema operativo libre de virus.</label>
+<label><input type="radio" name="p5" value="D">D) Una red social segura.</label>
+</div>
+
+<div class="pregunta-box">
+<p><b>6. ¿Por qué es importante actualizar el software regularmente?</b></p>
+<label><input type="radio" name="p6" value="A" required>A) Para corregir vulnerabilidades de seguridad y parchar fallas.</label>
+<label><input type="radio" name="p6" value="B">B) Para que la computadora gaste más batería.</label>
+<label><input type="radio" name="p6" value="C">C) Para cambiar el color de la pantalla.</label>
+<label><input type="radio" name="p6" value="D">D) No es importante.</label>
+</div>
+
+<div class="pregunta-box">
+<p><b>7. ¿Qué es una red VPN (Red Virtual Privada)?</b></p>
+<label><input type="radio" name="p7" value="A" required>A) Una herramienta que cifra tu conexión a internet y oculta tu ubicación.</label>
+<label><input type="radio" name="p7" value="B">B) Un cable de red más veloz.</label>
+<label><input type="radio" name="p7" value="C">C) Una página web bloqueada.</label>
+<label><input type="radio" name="p7" value="D">D) Un tipo de virus troyano.</label>
+</div>
+
+<div class="pregunta-box">
+<p><b>8. ¿Qué indica el protocolo HTTPS en una página web?</b></p>
+<label><input type="radio" name="p8" value="A" required>A) Que la comunicación entre tu navegador y el sitio web está cifrada y es segura.</label>
+<label><input type="radio" name="p8" value="B">B) Que la página web es totalmente gratuita.</label>
+<label><input type="radio" name="p8" value="C">C) Que la página pertenece al gobierno.</label>
+<label><input type="radio" name="p8" value="D">D) Que la página tiene muchos anuncios.</label>
+</div>
+
+<div class="pregunta-box">
+<p><b>9. ¿Qué es la ingeniería social en ciberseguridad?</b></p>
+<label><input type="radio" name="p9" value="A" required>A) Manipular psicológicamente a las personas para que revelen información confidencial.</label>
+<label><input type="radio" name="p9" value="B">B) Una red social para ingenieros en sistemas.</label>
+<label><input type="radio" name="p9" value="C">C) Un programa para crear redes sociales.</label>
+<label><input type="radio" name="p9" value="D">D) Instalar cámaras de vigilancia en una oficina.</label>
+</div>
+
+<div class="pregunta-box">
+<p><b>10. ¿Cuál es una buena práctica ante un correo sospechoso con un enlace desconocido?</b></p>
+<label><input type="radio" name="p10" value="A" required>A) No hacer clic en los enlaces ni descargar archivos; reportarlo y eliminarlo.</label>
+<label><input type="radio" name="p10" value="B">B) Dar clic para ver a dónde te redirige.</label>
+<label><input type="radio" name="p10" value="C">C) Reenviarlo a todos tus contactos.</label>
+<label><input type="radio" name="p10" value="D">D) Responder con tus datos personales para verificar.</label>
+</div>
+
+<button type="submit">
+Enviar respuestas y evaluar nivel
+</button>
+
+</form>
+
+<p class="seguridad">
+CYBERGUARD • Seguridad digital
+</p>
+
+</div>
+
+</body>
+</html>

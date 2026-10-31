@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificado | CyberGuard</title>
+
+<style>
+*{box-sizing:border-box}
+
+html,body{
+margin:0;
+min-height:100%;
+}
+
+body{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:25px;
+font-family:serif;
+color:#fff;
+position:relative;
+overflow:hidden;
+
+background:
+radial-gradient(circle at 20% 20%,rgba(120,190,255,.45),transparent 30%),
+radial-gradient(circle at 80% 80%,rgba(0,75,160,.55),transparent 35%),
+linear-gradient(135deg,#061526,#0b2b4d,#14517e,#1d6f9f,#0b355b,#030c18);
+}
+
+/* CUADRÍCULA */
+body::before{
+content:"";
+position:fixed;
+inset:0;
+
+background-image:
+linear-gradient(rgba(100,190,255,.08) 1px,transparent 1px),
+linear-gradient(90deg,rgba(100,190,255,.08) 1px,transparent 1px);
+
+background-size:40px 40px;
+pointer-events:none;
+z-index:0;
+}
+
+/* MATRIX */
+#matrix{
+position:fixed;
+inset:0;
+width:100%;
+height:100%;
+z-index:1;
+pointer-events:none;
+opacity:.45;
+}
+
+/* CÍRCULOS */
+.circulo{
+position:fixed;
+border-radius:50%;
+pointer-events:none;
+z-index:2;
+}
+
+.circulo-1{
+width:350px;
+height:350px;
+top:-180px;
+left:-120px;
+border:1px solid rgba(100,200,255,.25);
+
+box-shadow:
+0 0 30px rgba(0,140,255,.15),
+inset 0 0 30px rgba(0,140,255,.1);
+}
+
+.circulo-2{
+width:450px;
+height:450px;
+right:-220px;
+bottom:-230px;
+border:1px solid rgba(70,170,255,.22);
+
+box-shadow:
+0 0 40px rgba(0,120,255,.15),
+inset 0 0 40px rgba(0,120,255,.08);
+}
+
+/* BOTÓN CERRAR SESIÓN */
+.boton-salida{
+position:fixed;
+top:20px;
+right:20px;
+
+z-index:10;
+
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+
+width:48px;
+height:48px;
+
+
+color:#fff;
+
+border:1px solid rgba(4, 69, 143, 0.8);
+border-radius:30px;
+
+text-decoration:none;
+font-size:23px;
+
+box-shadow:
+0 0 10px rgba(67, 217, 237, 0.4),
+0 0 20px rgba(79, 174, 228, 0.15);
+
+transition:.25s;
+}
+
+.boton-salida:hover{
+
+transform:translateY(-2px) scale(1.05);
+
+box-shadow:
+0 0 15px rgba(229,34,53,.7),
+0 0 30px rgba(229,34,53,.25);
+}
+
+/* TARJETA */
+.cert-card{
+position:relative;
+z-index:5;
+
+width:min(94%,600px);
+
+padding:38px 45px 32px;
+
+text-align:center;
+
+background:
+linear-gradient(
+145deg,
+rgba(11,43,77,.94),
+rgba(2,13,27,.96)
+);
+
+border:1px solid rgba(100,210,255,.75);
+border-radius:22px;
+
+box-shadow:
+0 0 15px rgba(0,170,255,.25),
+0 0 45px rgba(0,110,255,.15),
+inset 0 0 25px rgba(70,180,255,.06);
+
+backdrop-filter:blur(12px);
+-webkit-backdrop-filter:blur(12px);
+
+overflow:hidden;
+}
+
+/* LÍNEA SUPERIOR */
+.cert-card::before{
+content:"";
+position:absolute;
+top:0;
+left:7%;
+
+width:86%;
+height:3px;
+
+background:
+linear-gradient(
+90deg,
+transparent,
+#72cfff,
+#fff,
+#72cfff,
+transparent
+);
+
+box-shadow:
+0 0 10px #168cff,
+0 0 25px #168cff;
+}
+
+/* ENCABEZADO */
+.encabezado{
+margin-bottom:8px;
+}
+
+.encabezado h1{
+margin:0;
+
+font-size:32px;
+font-weight:900;
+letter-spacing:5px;
+
+color:#fff;
+
+text-shadow:
+0 0 8px #168cff,
+0 0 20px rgba(22,140,255,.8);
+}
+
+.subtitulo{
+margin:8px 0 0;
+
+font-size:13px;
+letter-spacing:2px;
+text-transform:uppercase;
+
+color:#8bdcff;
+}
+
+/* LOGO */
+.icono{
+width:105px;
+height:105px;
+
+margin:25px auto 18px;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+border-radius:50%;
+
+background:
+radial-gradient(
+circle,
+rgba(40,160,255,.18),
+rgba(0,35,75,.15) 65%,
+transparent 70%
+);
+
+border:1px solid rgba(100,210,255,.35);
+
+box-shadow:
+0 0 15px rgba(0,160,255,.2),
+inset 0 0 20px rgba(50,180,255,.08);
+}
+
+.icono img{
+width:88px;
+height:88px;
+
+object-fit:contain;
+
+filter:
+drop-shadow(0 0 5px #168cff)
+drop-shadow(0 0 12px rgba(22,140,255,.8));
+}
+
+/* TEXTO */
+.felicidades{
+margin:8px 0;
+
+font-size:25px;
+font-weight:bold;
+
+color:#fff;
+
+text-shadow:
+0 0 8px rgba(114,207,255,.8);
+}
+
+.mensaje{
+margin:8px auto 18px;
+
+max-width:450px;
+
+color:#b9eaff;
+
+font-size:15px;
+line-height:1.6;
+}
+
+/* PUNTUACIÓN */
+.score-box{
+margin:18px auto;
+
+padding:18px 35px;
+
+width:100%;
+max-width:360px;
+
+border-radius:14px;
+
+background:
+linear-gradient(
+145deg,
+rgba(20,90,140,.40),
+rgba(3,22,42,.70)
+);
+
+border:1px solid rgba(114,207,255,.45);
+
+box-shadow:
+inset 0 0 12px rgba(40,170,255,.07),
+0 0 12px rgba(0,130,255,.10);
+}
+
+.score-label{
+display:block;
+
+margin-bottom:7px;
+
+font-size:11px;
+letter-spacing:1.8px;
+
+color:#8bdcff;
+text-transform:uppercase;
+}
+
+.score{
+font-size:27px;
+font-weight:900;
+
+color:#fff;
+
+text-shadow:
+0 0 7px #168cff,
+0 0 15px rgba(22,140,255,.7);
+}
+
+/* ESTADO */
+.estado{
+margin:17px 0;
+
+font-size:10px;
+letter-spacing:1.5px;
+
+color:#72cfff;
+
+text-transform:uppercase;
+}
+
+.estado::before{
+content:"●";
+
+margin-right:8px;
+
+color:#4dffb5;
+
+text-shadow:
+0 0 7px #4dffb5;
+}
+
+/* PIE */
+.footer{
+margin-top:22px;
+
+padding-top:15px;
+
+border-top:1px solid rgba(114,207,255,.15);
+
+font-size:10px;
+letter-spacing:1.5px;
+
+color:rgba(170,220,245,.55);
+
+text-transform:uppercase;
+}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+
+body{
+padding:15px;
+overflow-y:auto;
+}
+
+.cert-card{
+width:100%;
+padding:30px 20px 25px;
+}
+
+.encabezado h1{
+font-size:27px;
+}
+
+.icono{
+width:90px;
+height:90px;
+}
+
+.icono img{
+width:75px;
+height:75px;
+}
+
+.score-box{
+width:100%;
+max-width:330px;
+padding:17px 25px;
+}
+
+.score{
+font-size:24px;
+}
+
+.boton-salida{
+top:12px;
+right:12px;
+width:42px;
+height:42px;
+font-size:20px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<!-- ADAPTADO: Botón de cerrar sesión con ruta de Flask -->
+<a
+href="{{ url_for('logout') }}"
+class="boton-salida"
+title="Cerrar sesión"
+aria-label="Cerrar sesión"
+>
+🚪
+</a>
+
+<canvas id="matrix"></canvas>
+
+<div class="circulo circulo-1"></div>
+<div class="circulo circulo-2"></div>
+
+<main class="cert-card">
+
+<header class="encabezado">
+
+<h1>CYBERGUARD</h1>
+
+<p class="subtitulo">
+Plataforma de Seguridad Digital
+</p>
+
+</header>
+
+<!-- LOGO -->
+<div class="icono">
+<!-- ADAPTADO: Usando url_for para encontrar tu logo2.1.png en static -->
+<img
+src="{{ url_for('static', filename='logo2.1.png') }}"
+alt="Logo de CyberGuard"
+>
+
+</div>
+
+<h2 class="felicidades">
+¡Felicidades!
+</h2>
+
+<p class="mensaje">
+Has completado correctamente la evaluación
+de seguridad digital.
+</p>
+
+<!-- PUNTUACIÓN -->
+<div class="score-box">
+
+<span class="score-label">
+Tu puntuación
+</span>
+
+<!-- ADAPTADO: Variable de puntuación enviada desde Flask -->
+<div class="score">
+{{ puntuacion }} / 10
+</div>
+
+</div>
+
+<p class="estado">
+SISTEMA PROTEGIDO · CONEXIÓN SEGURA
+</p>
+
+<footer class="footer">
+CYBERGUARD · PROTEGE TU MUNDO DIGITAL
+</footer>
+
+</main>
+
+<!-- MATRIX -->
+<script>
+const canvas=document.getElementById("matrix");
+const ctx=canvas.getContext("2d");
+
+const caracteres=
+"☆♤◇♧□☆♤◇♧□☆♤◇♧□☆♤◇♧□☆♤◇♧□☆♤◇♧□<<>";
+
+const tamano=25;
+
+let columnas=0;
+let gotas=[];
+
+function ajustarCanvas(){
+
+const dpr=Math.min(
+window.devicePixelRatio||1,
+2
+);
+
+canvas.width=
+window.innerWidth*dpr;
+
+canvas.height=
+window.innerHeight*dpr;
+
+canvas.style.width=
+window.innerWidth+"px";
+
+canvas.style.height=
+window.innerHeight+"px";
+
+ctx.setTransform(
+dpr,
+0,
+0,
+dpr,
+0,
+0
+);
+
+columnas=Math.ceil(
+window.innerWidth/tamano
+);
+
+gotas=Array.from(
+{length:columnas},
+()=>Math.random()*-100
+);
+}
+
+function dibujarMatrix(){
+
+ctx.clearRect(
+0,
+0,
+window.innerWidth,
+window.innerHeight
+);
+
+ctx.font=
+tamano+"px monospace";
+
+for(
+let i=0;
+i<columnas;
+i++
+){
+
+const caracter=
+caracteres.charAt(
+Math.floor(
+Math.random()*
+caracteres.length
+)
+);
+
+const x=i*tamano;
+const y=gotas[i]*tamano;
+
+if(Math.random()>.94){
+
+ctx.fillStyle="#ffffff";
+
+ctx.shadowColor="#ffffff";
+ctx.shadowBlur=10;
+
+}else{
+
+ctx.fillStyle="#72cfff";
+
+ctx.shadowColor="#168cff";
+ctx.shadowBlur=8;
+}
+
+ctx.fillText(
+caracter,
+x,
+y
+);
+
+if(
+y>window.innerHeight&&
+Math.random()>.975
+){
+
+gotas[i]=0;
+}
+
+gotas[i]+=
+.5+
+Math.random()*.7;
+}
+
+ctx.shadowBlur=0;
+}
+
+ajustarCanvas();
+
+window.addEventListener(
+"resize",
+ajustarCanvas
+);
+
+let ultimoFrame=0;
+
+function animar(tiempo){
+
+if(
+tiempo-ultimoFrame>=40
+){
+
+dibujarMatrix();
+
+ultimoFrame=tiempo;
+}
+
+requestAnimationFrame(animar);
+}
+
+requestAnimationFrame(animar);
+</script>
+
+</body>
+</html>

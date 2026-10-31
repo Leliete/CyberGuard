@@ -1,38 +1,858 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión | CyberGuard</title>
+
+    <title>Iniciar sesión | CyberGuard</title>
+
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- ADAPTADO: Usando url_for para el CSS de Flask -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 320px; }
-        h1 { color: #1a2a3a; text-align: center; margin-bottom: 5px; }
-        p.subtitle { text-align: center; color: #666; font-size: 14px; margin-top: 0; }
-        label { font-weight: bold; display: block; margin-top: 15px; font-size: 14px; }
-        input { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
-        button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; margin-top: 20px; cursor: pointer; font-weight: bold; }
-        button:hover { background-color: #0056b3; }
-        .link { text-align: center; margin-top: 15px; font-size: 14px; }
+        /* =========================================
+           CONFIGURACIÓN GENERAL
+        ========================================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            font-family: 'Rajdhani', sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 15% 15%,
+                    rgba(120, 190, 255, 0.45),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 85% 85%,
+                    rgba(0, 75, 160, 0.55),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #061526,
+                    #0b2b4d,
+                    #14517e,
+                    #1d6f9f,
+                    #0b355b,
+                    #030c18
+                );
+
+            color: white;
+        }
+
+
+        /* =========================================
+           CUADRÍCULA TECNOLÓGICA
+        ========================================= */
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+
+            background-image:
+                linear-gradient(
+                    rgba(170, 220, 255, 0.09) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(170, 220, 255, 0.09) 1px,
+                    transparent 1px
+                );
+
+            background-size: 45px 45px;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.45;
+        }
+
+
+        /* =========================================
+           MATRIX
+        ========================================= */
+
+        #matrix {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            background: transparent;
+        }
+
+
+        /* =========================================
+           CONTENEDOR PRINCIPAL
+        ========================================= */
+
+        .contenedor {
+            position: relative;
+            z-index: 5;
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 25px 30px 15px;
+            text-align: center;
+        }
+
+
+        /* =========================================
+           CÍRCULOS TECNOLÓGICOS
+        ========================================= */
+
+        .contenedor::before {
+            content: "";
+            position: fixed;
+            width: 350px;
+            height: 350px;
+            top: -120px;
+            left: -100px;
+            border-radius: 50%;
+            border: 2px solid rgba(150, 220, 255, 0.20);
+
+            box-shadow:
+                0 0 35px rgba(0, 150, 255, 0.30);
+
+            pointer-events: none;
+        }
+
+        .contenedor::after {
+            content: "";
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            bottom: -250px;
+            right: -150px;
+            border-radius: 50%;
+            border: 2px solid rgba(120, 200, 255, 0.18);
+
+            box-shadow:
+                0 0 40px rgba(0, 110, 200, 0.35);
+
+            pointer-events: none;
+        }
+
+
+        /* =========================================
+           LOGO
+        ========================================= */
+
+        .logo {
+            position: relative;
+            z-index: 6;
+            display: block;
+            margin: 0 auto 10px;
+
+            filter:
+                drop-shadow(
+                    0 0 8px rgba(100, 200, 255, 0.75)
+                );
+        }
+
+
+        /* =========================================
+           TÍTULOS
+        ========================================= */
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #eaf7ff;
+
+            text-shadow:
+                0 0 8px rgba(80, 190, 255, 0.75),
+                0 0 18px rgba(0, 120, 220, 0.55);
+        }
+
+        .subtitulo {
+            color: #c8eaff;
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #ffffff;
+
+            text-shadow:
+                0 0 10px rgba(80, 190, 255, 0.45);
+        }
+
+        .descripcion {
+            color: #d8efff;
+        }
+
+
+        /* =========================================
+           FORMULARIO
+        ========================================= */
+
+        form {
+            width: 100%;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+
+        /* =========================================
+           CAMPOS
+        ========================================= */
+
+        input {
+            background: rgba(5, 25, 45, 0.82);
+            color: white;
+            border: 1px solid rgba(120, 205, 255, 0.55);
+
+            box-shadow:
+                inset 0 0 12px rgba(0, 120, 200, 0.15),
+                0 0 8px rgba(0, 100, 180, 0.12);
+        }
+
+        input::placeholder {
+            color: rgba(205, 230, 245, 0.65);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #72cfff;
+
+            box-shadow:
+                0 0 8px rgba(70, 190, 255, 0.45),
+                0 0 18px rgba(0, 120, 220, 0.25);
+        }
+
+        label {
+            color: #e2f5ff;
+        }
+
+        #ayuda-password {
+            color: #b9dcf2;
+        }
+
+
+        /* =========================================
+           CONTRASEÑA
+        ========================================= */
+
+        .password-contenedor {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-contenedor input {
+            width: 100%;
+            padding-right: 48px;
+            box-sizing: border-box;
+        }
+
+
+        /* =========================================
+           BOTÓN OJO
+        ========================================= */
+
+        .boton-ojo {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            padding: 5px;
+            margin: 0;
+            cursor: pointer;
+            color: #a9dfff;
+            font-size: 20px;
+            line-height: 1;
+            width: auto;
+            box-shadow: none;
+        }
+
+        .boton-ojo:hover {
+            background: transparent;
+            box-shadow: none;
+            color: #ffffff;
+        }
+
+        .boton-ojo:focus-visible {
+            outline: 2px solid #72cfff;
+            border-radius: 4px;
+        }
+
+
+        /* =========================================
+           BOTÓN INICIAR SESIÓN
+        ========================================= */
+
+        form > button[type="submit"] {
+            background:
+                linear-gradient(
+                    135deg,
+                    #0a6ea8,
+                    #249bd1,
+                    #0a5d91
+                );
+
+            color: white;
+            border: 1px solid #8cddff;
+
+            box-shadow:
+                0 0 10px rgba(60, 190, 255, 0.30),
+                inset 0 0 10px rgba(255, 255, 255, 0.08);
+        }
+
+        form > button[type="submit"]:hover {
+            background:
+                linear-gradient(
+                    135deg,
+                    #138bc8,
+                    #39b8ed,
+                    #0b6da5
+                );
+
+            box-shadow:
+                0 0 18px rgba(60, 190, 255, 0.55);
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =========================================
+           ENLACE REGISTRO
+        ========================================= */
+
+        .enlace {
+            color: #d5edff;
+        }
+
+        .enlace a {
+            color: #72cfff;
+
+            text-shadow:
+                0 0 7px rgba(80, 190, 255, 0.55);
+        }
+
+
+        /* =========================================
+           POLÍTICA DE PRIVACIDAD
+        ========================================= */
+
+        .politica-boton-contenedor {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto 20px;
+            text-align: center;
+        }
+
+        .boton-politica {
+            background: transparent;
+            color: #72cfff;
+            border: 1px solid rgba(114, 207, 255, 0.40);
+            border-radius: 4px;
+            padding: 3px 7px;
+            font-size: 10px;
+            line-height: 1.2;
+            width: auto;
+            min-width: 0;
+            cursor: pointer;
+
+            box-shadow:
+                0 0 4px rgba(0, 120, 220, 0.12);
+
+            transition: 0.3s;
+        }
+
+        .boton-politica:hover {
+            color: white;
+            background: rgba(20, 110, 170, 0.18);
+            border-color: #72cfff;
+
+            box-shadow:
+                0 0 8px rgba(60, 190, 255, 0.30);
+        }
+
+
+        /* =========================================
+           VENTANA DE PRIVACIDAD
+        ========================================= */
+
+        .ventana-politica {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(0, 5, 15, 0.78);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+
+        /* =========================================
+           CUADRO DE PRIVACIDAD
+        ========================================= */
+
+        .contenido-politica {
+            position: relative;
+            width: 90%;
+            max-width: 550px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 30px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #061526,
+                    #0b2b4d,
+                    #0d4168,
+                    #061526
+                );
+
+            color: #d8efff;
+            border: 1px solid #72cfff;
+            border-radius: 12px;
+
+            box-shadow:
+                0 0 20px rgba(60, 190, 255, 0.45),
+                inset 0 0 20px rgba(0, 100, 180, 0.15);
+
+            text-align: left;
+        }
+
+        .contenido-politica h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #72cfff;
+            font-size: 22px;
+
+            text-shadow:
+                0 0 10px rgba(80, 190, 255, 0.65);
+        }
+
+        .contenido-politica p {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 14px;
+        }
+
+
+        /* =========================================
+           BOTÓN CERRAR
+        ========================================= */
+
+        .cerrar-politica {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            width: auto;
+            padding: 2px 8px;
+            background: transparent;
+            border: none;
+            color: #72cfff;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: none;
+        }
+
+        .cerrar-politica:hover {
+            background: transparent;
+            color: white;
+            box-shadow: none;
+        }
+
+
+        /* =========================================
+           BOTÓN ENTENDIDO
+        ========================================= */
+
+        .boton-aceptar {
+            display: block;
+            margin: 25px auto 0;
+            padding: 10px 30px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0a6ea8,
+                    #249bd1,
+                    #0a5d91
+                );
+
+            color: white;
+            border: 1px solid #8cddff;
+            border-radius: 6px;
+            cursor: pointer;
+
+            box-shadow:
+                0 0 10px rgba(60, 190, 255, 0.30);
+        }
+
+        .boton-aceptar:hover {
+            box-shadow:
+                0 0 18px rgba(60, 190, 255, 0.55);
+        }
+
+
+        /* =========================================
+           TIPOGRAFÍA GENERAL
+        ========================================= */
+
+        body,
+        p,
+        label,
+        input,
+        button,
+        small,
+        a {
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        h1,
+        h2,
+        .contenido-politica h3 {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 480px) {
+            body {
+                justify-content: center;
+            }
+
+            .contenedor {
+                width: 95%;
+                padding: 20px 15px 10px;
+            }
+
+            .politica-boton-contenedor {
+                width: 95%;
+                margin-top: 0;
+            }
+
+            .contenido-politica {
+                padding: 25px 20px;
+            }
+        }
     </style>
 </head>
+
 <body>
-    <div class="card">
+
+    <!-- MATRIX -->
+    <canvas id="matrix"></canvas>
+
+    <!-- CUADRO DE INICIO DE SESIÓN -->
+    <main class="contenedor">
+
+        <!-- ADAPTADO: Usando url_for para encontrar tu logo2.1.png en static -->
+        <img
+            src="{{ url_for('static', filename='logo2.1.png') }}"
+            alt="Logo de CyberGuard"
+            class="logo"
+            width="120"
+        >
+
         <h1>CYBERGUARD</h1>
-        <p class="subtitle">Protege tu mundo digital</p>
+
+        <p class="subtitulo">
+            Protege tu mundo digital
+        </p>
+
         <h2>Iniciar sesión</h2>
-        
-        <form action="/login" method="POST">
+
+        <p class="descripcion">
+            Accede a tu plataforma de seguridad digital.
+        </p>
+
+        <!-- ADAPTADO: method="POST" para que se comunique con Flask -->
+        <form id="loginForm" method="POST">
+
             <label for="usuario">Usuario</label>
-            <input type="text" id="usuario" name="usuario" placeholder="Escribe tu usuario" required>
+
+            <input
+                type="text"
+                id="usuario"
+                name="usuario"
+                placeholder="Escribe tu usuario"
+                autocomplete="username"
+                required
+            >
 
             <label for="password">Contraseña</label>
-            <input type="password" id="password" name="password" placeholder="Escribe tu contraseña" required>
 
-            <button type="submit">Iniciar sesión</button>
+            <div class="password-contenedor">
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Contraseña"
+                    autocomplete="current-password"
+                    required
+                    aria-describedby="ayuda-password"
+                >
+
+                <button
+                    type="button"
+                    id="togglePassword"
+                    class="boton-ojo"
+                    aria-label="Mostrar contraseña"
+                    aria-pressed="false"
+                >
+                    👁️
+                </button>
+
+            </div>
+
+            <small id="ayuda-password">
+                Ingresa tu contraseña registrada.
+            </small>
+
+            <button type="submit">
+                Iniciar sesión
+            </button>
+
+            <p
+                id="mensaje"
+                class="mensaje"
+                role="status"
+            ></p>
+
         </form>
 
-        <p class="link">¿No tienes cuenta? <a href="/registro">Crear cuenta</a></p>
+        <p class="enlace">
+            ¿No tienes cuenta?
+            <!-- ADAPTADO: Enlace dinámico con Flask hacia el registro -->
+            <a href="{{ url_for('registro') }}">Crear cuenta</a>
+        </p>
+
+    </main>
+
+    <!-- BOTÓN DE POLÍTICA DE PRIVACIDAD -->
+    <div class="politica-boton-contenedor">
+
+        <button
+            type="button"
+            class="boton-politica"
+            onclick="abrirPolitica()"
+        >
+            Política de Privacidad
+        </button>
+
     </div>
+
+    <!-- VENTANA DE POLÍTICA -->
+    <div
+        id="ventanaPolitica"
+        class="ventana-politica"
+    >
+
+        <div class="contenido-politica">
+
+            <button
+                type="button"
+                class="cerrar-politica"
+                onclick="cerrarPolitica()"
+                aria-label="Cerrar"
+            >
+                ×
+            </button>
+
+            <h3>Política de Privacidad</h3>
+
+            <p>
+                En CyberGuard nos comprometemos a proteger la
+                privacidad y seguridad de nuestros usuarios.
+            </p>
+
+            <p>
+                La información proporcionada al iniciar sesión
+                será utilizada únicamente para permitir el acceso
+                a la plataforma y proporcionar sus funciones.
+            </p>
+
+            <p>
+                Los datos personales no serán compartidos con
+                terceros sin autorización, salvo cuando sea
+                necesario para cumplir con obligaciones legales.
+            </p>
+
+            <p>
+                Al utilizar esta plataforma, aceptas el tratamiento
+                de la información de acuerdo con esta política de
+                privacidad.
+            </p>
+
+            <button
+                type="button"
+                class="boton-aceptar"
+                onclick="cerrarPolitica()"
+            >
+                Entendido
+            </button>
+
+        </div>
+    </div>
+
+    <!-- MATRIX ANIMADA -->
+    <script>
+        const canvas = document.getElementById("matrix");
+        const ctx = canvas.getContext("2d");
+
+        const caracteres = "☆♤◇♧□☆♤◇♧□☆♤◇♧□☆♤◇♧□☆♤◇♧□☆♤◇♧□<>";
+        const tamano = 25;
+
+        let columnas = 0;
+        let gotas = [];
+
+        function ajustarCanvas() {
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+            canvas.width = window.innerWidth * dpr;
+            canvas.height = window.innerHeight * dpr;
+
+            canvas.style.width = window.innerWidth + "px";
+            canvas.style.height = window.innerHeight + "px";
+
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            columnas = Math.ceil(window.innerWidth / tamano);
+
+            gotas = Array.from(
+                { length: columnas },
+                () => Math.random() * -100
+            );
+        }
+
+        function dibujarMatrix() {
+            ctx.clearRect(
+                0,
+                0,
+                window.innerWidth,
+                window.innerHeight
+            );
+
+            ctx.font = tamano + "px monospace";
+
+            for (let i = 0; i < columnas; i++) {
+                const caracter = caracteres.charAt(
+                    Math.floor(Math.random() * caracteres.length)
+                );
+
+                const x = i * tamano;
+                const y = gotas[i] * tamano;
+
+                ctx.fillStyle = Math.random() > 0.92
+                    ? "#ffffff"
+                    : "#72cfff";
+
+                ctx.shadowColor = "#168cff";
+                ctx.shadowBlur = 8;
+
+                ctx.fillText(caracter, x, y);
+
+                if (
+                    y > window.innerHeight &&
+                    Math.random() > 0.975
+                ) {
+                    gotas[i] = 0;
+                }
+
+                gotas[i] += 0.5 + Math.random() * 0.7;
+            }
+
+            ctx.shadowBlur = 0;
+        }
+
+        ajustarCanvas();
+
+        window.addEventListener("resize", ajustarCanvas);
+
+        let ultimoFrame = 0;
+
+        function animar(tiempo) {
+            if (tiempo - ultimoFrame >= 40) {
+                dibujarMatrix();
+                ultimoFrame = tiempo;
+            }
+
+            requestAnimationFrame(animar);
+        }
+
+        requestAnimationFrame(animar);
+    </script>
+
+    <!-- MOSTRAR / OCULTAR CONTRASEÑA -->
+    <script>
+        const passwordInput = document.getElementById("password");
+        const togglePassword = document.getElementById("togglePassword");
+
+        togglePassword.addEventListener("click", function () {
+            const mostrar = passwordInput.type === "password";
+
+            passwordInput.type = mostrar ? "text" : "password";
+            togglePassword.textContent = mostrar ? "🙈" : "👁️";
+
+            togglePassword.setAttribute(
+                "aria-label",
+                mostrar ? "Ocultar contraseña" : "Mostrar contraseña"
+            );
+
+            togglePassword.setAttribute(
+                "aria-pressed",
+                String(mostrar)
+            );
+        });
+    </script>
+
+    <!-- POLÍTICA DE PRIVACIDAD -->
+    <script>
+        function abrirPolitica() {
+            document.getElementById("ventanaPolitica").style.display = "flex";
+        }
+
+        function cerrarPolitica() {
+            document.getElementById("ventanaPolitica").style.display = "none";
+        }
+
+        document.getElementById("ventanaPolitica").addEventListener(
+            "click",
+            function (event) {
+                if (event.target === this) {
+                    cerrarPolitica();
+                }
+            }
+        );
+    </script>
+
 </body>
 </html>
