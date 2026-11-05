@@ -1,10 +1,29 @@
 from flask import Flask, render_template, request, redirect, url_for
 import bcrypt
+from cryptography.fernet import Fernet
 pyodbc = __import__('pyodbc')
 
 app = Flask(__name__)
 
-# Función para conectar a SQL Server con el nombre exacto de tu instancia
+# Llave de Fernet estrictamente fija y válida de 32 bytes en base64
+# Esto garantiza que la misma palabra siempre cifre igual y se pueda descifrar correctamente
+FERNET_KEY = b'Kk7y9R2vL5xP3mN1sQ8wZ4tA6bC0fD9gH2jK5lM8nB0='
+cipher = Fernet(FERNET_KEY)
+
+def cifrar(texto):
+    if not texto:
+        return ""
+    return cipher.encrypt(texto.encode('utf-8')).decode('utf-8')
+
+def descifrar(texto_cifrado):
+    if not texto_cifrado:
+        return ""
+    try:
+        return cipher.decrypt(texto_cifrado.encode('utf-8')).decode('utf-8')
+    except Exception:
+        return texto_cifrado # Si no se puede descifrar, regresa el texto original
+
+# Conexión a la base de datos
 def conectar_db():
     conexion = pyodbc.connect(
         'DRIVER={SQL Server};'
@@ -14,7 +33,7 @@ def conectar_db():
     )
     return conexion
 
-# Crear la tabla de usuarios en SQL Server si no existe
+# Inicializar tabla con columnas VARCHAR(MAX) para soportar cadenas cifradas largas
 def inicializar_db():
     conexion = conectar_db()
     cursor = conexion.cursor()
@@ -22,55 +41,64 @@ def inicializar_db():
         IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'usuarios')
         CREATE TABLE usuarios (
             id INT IDENTITY(1,1) PRIMARY KEY,
-            nombre VARCHAR(255) NOT NULL,
-            usuario VARCHAR(255) NOT NULL UNIQUE,
-            correo VARCHAR(255) NOT NULL,
+            nombre VARCHAR(MAX) NOT NULL,
+            usuario VARCHAR(MAX) NOT NULL,
+            correo VARCHAR(MAX) NOT NULL,
             password VARCHAR(255) NOT NULL
         )
     ''')
     conexion.commit()
     conexion.close()
 
-# Ruta principal: Redirige al Login
 @app.route('/')
 def inicio():
     return redirect(url_for('login'))
 
-# Ruta para el Login (verificando con Bcrypt)
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        usuario = request.form['usuario']
+        usuario_ingresado = request.form['usuario'].strip()
         password_ingresada = request.form['password']
         
         conexion = conectar_db()
         cursor = conexion.cursor()
-        cursor.execute('SELECT * FROM usuarios WHERE usuario = ?', (usuario,))
-        user = cursor.fetchone()
+        cursor.execute('SELECT * FROM usuarios')
+        usuarios_db = cursor.fetchall()
         conexion.close()
         
-        # Verificamos la contraseña usando bcrypt
-        if user and bcrypt.checkpw(password_ingresada.encode('utf-8'), user.password.encode('utf-8')):
+        # Buscamos el usuario recorriendo la tabla y descifrando el campo de usuario
+        usuario_encontrado = None
+        for u in usuarios_db:
+            usuario_descifrado = descifrar(u.usuario)
+            if usuario_descifrado == usuario_ingresado:
+                usuario_encontrado = u
+                break
+        
+        # Verificamos la contraseña con Bcrypt
+        if usuario_encontrado and bcrypt.checkpw(password_ingresada.encode('utf-8'), usuario_encontrado.password.encode('utf-8')):
             return redirect(url_for('evaluacion'))
         else:
             return "<h1>Error</h1><p>Usuario o contraseña incorrectos. <a href='/login'>Intentar de nuevo</a></p>"
             
     return render_template('login.html')
 
-# Ruta para el Registro (generando hash con Bcrypt)
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
     if request.method == 'POST':
-        nombre = request.form['nombre']
-        usuario = request.form['usuario']
-        correo = request.form['correo']
+        nombre_plano = request.form['nombre']
+        usuario_plano = request.form['usuario'].strip()
+        correo_plano = request.form['correo']
         password_plana = request.form['password']
         
-        # Validación de longitud mínima (mínimo 8 caracteres)
         if len(password_plana) < 8:
             return "<h1>Error</h1><p>La contraseña debe tener al menos 8 caracteres. <a href='/registro'>Intentar de nuevo</a></p>"
             
-        # Generar el hash seguro de la contraseña usando bcrypt
+        # Cifrar con Fernet
+        nombre_cifrado = cifrar(nombre_plano)
+        usuario_cifrado = cifrar(usuario_plano)
+        correo_cifrado = cifrar(correo_plano)
+        
+        # Hashear password con Bcrypt
         salt = bcrypt.gensalt()
         password_hashed = bcrypt.hashpw(password_plana.encode('utf-8'), salt).decode('utf-8')
             
@@ -78,16 +106,16 @@ def registro():
             conexion = conectar_db()
             cursor = conexion.cursor()
             cursor.execute('INSERT INTO usuarios (nombre, usuario, correo, password) VALUES (?, ?, ?, ?)',
-                           (nombre, usuario, correo, password_hashed))
+                           (nombre_cifrado, usuario_cifrado, correo_cifrado, password_hashed))
             conexion.commit()
             conexion.close()
-            return "<h1>¡Cuenta creada con éxito!</h1><p><a href='/login'>Haz clic aquí para iniciar sesión</a></p>"
+            # Redirección limpia hacia el login
+            return redirect(url_for('login'))
         except Exception as e:
-            return f"<h1>Error</h1><p>El usuario ya existe o hubo un error en la BD. <a href='/registro'>Intentar de nuevo</a></p>"
+            return f"<h1>Error</h1><p>Hubo un error en la BD: {e}. <a href='/registro'>Intentar de nuevo</a></p>"
             
     return render_template('registro.html')
 
-# Módulo de Evaluación Diagnóstica
 @app.route('/evaluacion', methods=['GET', 'POST'])
 def evaluacion():
     if request.method == 'POST':
@@ -126,17 +154,15 @@ def evaluacion():
             
     return render_template('Modulo de evaluacion.html')
 
-# Ruta para el certificado
 @app.route('/certificado/<int:puntuacion>')
 def certificado(puntuacion):
     return render_template('certificado.html', puntuacion=puntuacion)
 
-# Ruta para cerrar sesión
 @app.route('/logout')
 def logout():
     return redirect(url_for('login'))
 
 if __name__ == '__main__':
     inicializar_db()
-    print("Iniciando servidor de CyberGuard con SQL Server y Bcrypt...")
+    print("Iniciando servidor de CyberGuard con clave estática de Fernet...")
     app.run(debug=True)

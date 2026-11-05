@@ -7,17 +7,13 @@
 
     <title>Iniciar sesión | CyberGuard</title>
 
-    <!-- Fuentes -->
+    <!-- FUENTES -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- ADAPTADO: Usando url_for para el CSS de Flask -->
+    <!-- CSS EXTERNO USANDO FLASK -->
     <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
 
     <style>
-        /* =========================================
-           CONFIGURACIÓN GENERAL
-        ========================================= */
-
         * {
             box-sizing: border-box;
         }
@@ -28,10 +24,15 @@
             min-height: 100%;
         }
 
+        /* =========================================
+           FONDO PRINCIPAL
+        ========================================= */
+
         body {
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -63,7 +64,6 @@
             color: white;
         }
 
-
         /* =========================================
            CUADRÍCULA TECNOLÓGICA
         ========================================= */
@@ -85,11 +85,11 @@
                 );
 
             background-size: 45px 45px;
+
             pointer-events: none;
             z-index: 2;
             opacity: 0.45;
         }
-
 
         /* =========================================
            MATRIX
@@ -98,13 +98,14 @@
         #matrix {
             position: fixed;
             inset: 0;
+
             width: 100%;
             height: 100%;
+
             z-index: 1;
             pointer-events: none;
             background: transparent;
         }
-
 
         /* =========================================
            CONTENEDOR PRINCIPAL
@@ -113,13 +114,15 @@
         .contenedor {
             position: relative;
             z-index: 5;
+
             width: 90%;
             max-width: 600px;
+
             margin: 0 auto;
             padding: 25px 30px 15px;
+
             text-align: center;
         }
-
 
         /* =========================================
            CÍRCULOS TECNOLÓGICOS
@@ -128,15 +131,17 @@
         .contenedor::before {
             content: "";
             position: fixed;
+
             width: 350px;
             height: 350px;
+
             top: -120px;
             left: -100px;
+
             border-radius: 50%;
             border: 2px solid rgba(150, 220, 255, 0.20);
 
-            box-shadow:
-                0 0 35px rgba(0, 150, 255, 0.30);
+            box-shadow: 0 0 35px rgba(0, 150, 255, 0.30);
 
             pointer-events: none;
         }
@@ -144,19 +149,20 @@
         .contenedor::after {
             content: "";
             position: fixed;
+
             width: 500px;
             height: 500px;
+
             bottom: -250px;
             right: -150px;
+
             border-radius: 50%;
             border: 2px solid rgba(120, 200, 255, 0.18);
 
-            box-shadow:
-                0 0 40px rgba(0, 110, 200, 0.35);
+            box-shadow: 0 0 40px rgba(0, 110, 200, 0.35);
 
             pointer-events: none;
         }
-
 
         /* =========================================
            LOGO
@@ -165,15 +171,13 @@
         .logo {
             position: relative;
             z-index: 6;
+
             display: block;
+
             margin: 0 auto 10px;
 
-            filter:
-                drop-shadow(
-                    0 0 8px rgba(100, 200, 255, 0.75)
-                );
+            filter: drop-shadow(0 0 8px rgba(100, 200, 255, 0.75));
         }
-
 
         /* =========================================
            TÍTULOS
@@ -196,14 +200,12 @@
             font-family: 'Orbitron', sans-serif;
             color: #ffffff;
 
-            text-shadow:
-                0 0 10px rgba(80, 190, 255, 0.45);
+            text-shadow: 0 0 10px rgba(80, 190, 255, 0.45);
         }
 
         .descripcion {
             color: #d8efff;
         }
-
 
         /* =========================================
            FORMULARIO
@@ -214,7 +216,6 @@
             margin: 0 auto;
             text-align: left;
         }
-
 
         /* =========================================
            CAMPOS
@@ -251,6 +252,47 @@
             color: #b9dcf2;
         }
 
+        /* =========================================
+           MENSAJES DE VALIDACIÓN
+        ========================================= */
+
+        .estado-login {
+            display: none;
+            margin-top: 6px;
+            margin-bottom: 12px;
+            padding: 7px 9px;
+            font-size: 12px;
+            line-height: 1.4;
+            border-radius: 6px;
+        }
+
+        .estado-login.error {
+            display: block;
+            color: #ff7777;
+            background: rgba(255, 40, 40, 0.08);
+            border-left: 3px solid #ff3333;
+        }
+
+        .estado-login.correcto {
+            display: block;
+            color: #62ff9b;
+            background: rgba(0, 230, 118, 0.07);
+            border-left: 3px solid #00e676;
+        }
+
+        /* CAMPO CORRECTO */
+        #usuario.valido,
+        #password.valido {
+            border: 2px solid #00e676;
+            box-shadow: 0 0 8px rgba(0, 230, 118, 0.25);
+        }
+
+        /* CAMPO INCORRECTO */
+        #usuario.invalido,
+        #password.invalido {
+            border: 2px solid #ff3333;
+            box-shadow: 0 0 8px rgba(255, 51, 51, 0.30);
+        }
 
         /* =========================================
            CONTRASEÑA
@@ -266,7 +308,6 @@
             padding-right: 48px;
             box-sizing: border-box;
         }
-
 
         /* =========================================
            BOTÓN OJO
@@ -300,7 +341,6 @@
             border-radius: 4px;
         }
 
-
         /* =========================================
            BOTÓN INICIAR SESIÓN
         ========================================= */
@@ -320,9 +360,30 @@
             box-shadow:
                 0 0 10px rgba(60, 190, 255, 0.30),
                 inset 0 0 10px rgba(255, 255, 255, 0.08);
+
+            transition: 0.3s ease;
         }
 
-        form > button[type="submit"]:hover {
+        /* BOTÓN DESHABILITADO */
+        form > button[type="submit"]:disabled {
+            cursor: not-allowed;
+            opacity: 0.45;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #173d5c,
+                    #1a344b,
+                    #21445d
+                );
+
+            border-color: #496879;
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* BOTÓN HABILITADO */
+        form > button[type="submit"]:not(:disabled):hover {
             background:
                 linear-gradient(
                     135deg,
@@ -331,12 +392,19 @@
                     #0b6da5
                 );
 
-            box-shadow:
-                0 0 18px rgba(60, 190, 255, 0.55);
-
+            box-shadow: 0 0 18px rgba(60, 190, 255, 0.55);
             transform: translateY(-2px);
         }
 
+        /* =========================================
+           MENSAJE GENERAL
+        ========================================= */
+
+        #mensaje {
+            text-align: center;
+            color: #ff7777;
+            margin-top: 10px;
+        }
 
         /* =========================================
            ENLACE REGISTRO
@@ -348,14 +416,11 @@
 
         .enlace a {
             color: #72cfff;
-
-            text-shadow:
-                0 0 7px rgba(80, 190, 255, 0.55);
+            text-shadow: 0 0 7px rgba(80, 190, 255, 0.55);
         }
 
-
         /* =========================================
-           POLÍTICA DE PRIVACIDAD
+           BOTONES DE POLÍTICA Y TÉRMINOS
         ========================================= */
 
         .politica-boton-contenedor {
@@ -365,9 +430,15 @@
             max-width: 600px;
             margin: 0 auto 20px;
             text-align: center;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
         }
 
-        .boton-politica {
+        .boton-politica,
+        .boton-terminos {
             background: transparent;
             color: #72cfff;
             border: 1px solid rgba(114, 207, 255, 0.40);
@@ -379,27 +450,24 @@
             min-width: 0;
             cursor: pointer;
 
-            box-shadow:
-                0 0 4px rgba(0, 120, 220, 0.12);
-
+            box-shadow: 0 0 4px rgba(0, 120, 220, 0.12);
             transition: 0.3s;
         }
 
-        .boton-politica:hover {
+        .boton-politica:hover,
+        .boton-terminos:hover {
             color: white;
             background: rgba(20, 110, 170, 0.18);
             border-color: #72cfff;
-
-            box-shadow:
-                0 0 8px rgba(60, 190, 255, 0.30);
+            box-shadow: 0 0 8px rgba(60, 190, 255, 0.30);
         }
 
-
         /* =========================================
-           VENTANA DE PRIVACIDAD
+           VENTANAS DE POLÍTICA Y TÉRMINOS
         ========================================= */
 
-        .ventana-politica {
+        .ventana-politica,
+        .ventana-terminos {
             display: none;
             position: fixed;
             inset: 0;
@@ -410,12 +478,12 @@
             padding: 20px;
         }
 
-
         /* =========================================
-           CUADRO DE PRIVACIDAD
+           CUADRO DE POLÍTICA Y TÉRMINOS
         ========================================= */
 
-        .contenido-politica {
+        .contenido-politica,
+        .contenido-terminos {
             position: relative;
             width: 90%;
             max-width: 550px;
@@ -443,29 +511,30 @@
             text-align: left;
         }
 
-        .contenido-politica h3 {
+        .contenido-politica h3,
+        .contenido-terminos h3 {
             margin-top: 0;
             margin-bottom: 20px;
             text-align: center;
             color: #72cfff;
             font-size: 22px;
-
-            text-shadow:
-                0 0 10px rgba(80, 190, 255, 0.65);
+            text-shadow: 0 0 10px rgba(80, 190, 255, 0.65);
+            font-family: 'Orbitron', sans-serif;
         }
 
-        .contenido-politica p {
+        .contenido-politica p,
+        .contenido-terminos p {
             font-size: 14px;
             line-height: 1.6;
             margin-bottom: 14px;
         }
 
-
         /* =========================================
            BOTÓN CERRAR
         ========================================= */
 
-        .cerrar-politica {
+        .cerrar-politica,
+        .cerrar-terminos {
             position: absolute;
             top: 10px;
             right: 12px;
@@ -479,12 +548,12 @@
             box-shadow: none;
         }
 
-        .cerrar-politica:hover {
+        .cerrar-politica:hover,
+        .cerrar-terminos:hover {
             background: transparent;
             color: white;
             box-shadow: none;
         }
-
 
         /* =========================================
            BOTÓN ENTENDIDO
@@ -508,18 +577,15 @@
             border-radius: 6px;
             cursor: pointer;
 
-            box-shadow:
-                0 0 10px rgba(60, 190, 255, 0.30);
+            box-shadow: 0 0 10px rgba(60, 190, 255, 0.30);
         }
 
         .boton-aceptar:hover {
-            box-shadow:
-                0 0 18px rgba(60, 190, 255, 0.55);
+            box-shadow: 0 0 18px rgba(60, 190, 255, 0.55);
         }
 
-
         /* =========================================
-           TIPOGRAFÍA GENERAL
+           FUENTES
         ========================================= */
 
         body,
@@ -534,10 +600,10 @@
 
         h1,
         h2,
-        .contenido-politica h3 {
+        .contenido-politica h3,
+        .contenido-terminos h3 {
             font-family: 'Orbitron', sans-serif;
         }
-
 
         /* =========================================
            RESPONSIVE
@@ -556,13 +622,27 @@
             .politica-boton-contenedor {
                 width: 95%;
                 margin-top: 0;
+                gap: 6px;
             }
 
-            .contenido-politica {
+            .boton-politica,
+            .boton-terminos {
+                font-size: 9px;
+                padding: 3px 6px;
+            }
+
+            .contenido-politica,
+            .contenido-terminos {
                 padding: 25px 20px;
             }
         }
     </style>
+
+    <!-- ICONOS -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
 </head>
 
 <body>
@@ -573,7 +653,7 @@
     <!-- CUADRO DE INICIO DE SESIÓN -->
     <main class="contenedor">
 
-        <!-- ADAPTADO: Usando url_for para encontrar tu logo2.1.png en static -->
+        <!-- LOGO ADAPTADO CON URL_FOR -->
         <img
             src="{{ url_for('static', filename='logo2.1.png') }}"
             alt="Logo de CyberGuard"
@@ -593,9 +673,10 @@
             Accede a tu plataforma de seguridad digital.
         </p>
 
-        <!-- ADAPTADO: method="POST" para que se comunique con Flask -->
-        <form id="loginForm" method="POST">
+        <!-- FORMULARIO ADAPTADO CON METHOD POST -->
+        <form id="loginForm" method="POST" novalidate>
 
+            <!-- USUARIO -->
             <label for="usuario">Usuario</label>
 
             <input
@@ -604,9 +685,13 @@
                 name="usuario"
                 placeholder="Escribe tu usuario"
                 autocomplete="username"
+                minlength="3"
                 required
             >
 
+            <p id="mensajeUsuario" class="estado-login"></p>
+
+            <!-- CONTRASEÑA -->
             <label for="password">Contraseña</label>
 
             <div class="password-contenedor">
@@ -615,12 +700,15 @@
                     type="password"
                     id="password"
                     name="password"
-                    placeholder="Contraseña"
+                    placeholder="Escribe tu contraseña"
                     autocomplete="current-password"
+                    minlength="1"
+                    maxlength="8"
                     required
                     aria-describedby="ayuda-password"
                 >
 
+                <!-- BOTÓN MOSTRAR CONTRASEÑA -->
                 <button
                     type="button"
                     id="togglePassword"
@@ -634,30 +722,34 @@
             </div>
 
             <small id="ayuda-password">
-                Ingresa tu contraseña registrada.
+                Máximo 8 caracteres.
             </small>
 
-            <button type="submit">
+            <p id="mensajePassword" class="estado-login"></p>
+
+            <!-- BOTÓN DE INICIAR SESIÓN -->
+            <button
+                type="submit"
+                id="botonLogin"
+                disabled
+            >
                 Iniciar sesión
             </button>
 
-            <p
-                id="mensaje"
-                class="mensaje"
-                role="status"
-            ></p>
+            <!-- MENSAJE GENERAL -->
+            <p id="mensaje" class="mensaje" role="status"></p>
 
         </form>
 
+        <!-- REGISTRO DINÁMICO CON FLASK -->
         <p class="enlace">
             ¿No tienes cuenta?
-            <!-- ADAPTADO: Enlace dinámico con Flask hacia el registro -->
             <a href="{{ url_for('registro') }}">Crear cuenta</a>
         </p>
 
     </main>
 
-    <!-- BOTÓN DE POLÍTICA DE PRIVACIDAD -->
+    <!-- BOTONES DE POLÍTICA Y TÉRMINOS -->
     <div class="politica-boton-contenedor">
 
         <button
@@ -668,16 +760,19 @@
             Política de Privacidad
         </button>
 
+        <button
+            type="button"
+            class="boton-terminos"
+            onclick="abrirTerminos()"
+        >
+            Términos y Condiciones
+        </button>
+
     </div>
 
     <!-- VENTANA DE POLÍTICA -->
-    <div
-        id="ventanaPolitica"
-        class="ventana-politica"
-    >
-
+    <div id="ventanaPolitica" class="ventana-politica">
         <div class="contenido-politica">
-
             <button
                 type="button"
                 class="cerrar-politica"
@@ -719,7 +814,55 @@
             >
                 Entendido
             </button>
+        </div>
+    </div>
 
+    <!-- VENTANA DE TÉRMINOS Y CONDICIONES -->
+    <div id="ventanaTerminos" class="ventana-terminos">
+        <div class="contenido-terminos">
+            <button
+                type="button"
+                class="cerrar-terminos"
+                onclick="cerrarTerminos()"
+                aria-label="Cerrar"
+            >
+                ×
+            </button>
+
+            <h3>Términos y Condiciones</h3>
+
+            <p>
+                Al utilizar CyberGuard, aceptas cumplir con los
+                presentes términos y condiciones de uso de la
+                plataforma.
+            </p>
+
+            <p>
+                El usuario es responsable de proporcionar
+                información correcta al momento de crear su cuenta
+                y de mantener sus datos de acceso seguros.
+            </p>
+
+            <p>
+                La cuenta es de uso personal. El usuario no deberá
+                compartir su contraseña ni permitir que otras
+                personas utilicen sus credenciales.
+            </p>
+
+            <p>
+                CyberGuard está diseñado con fines educativos y de
+                seguridad digital. El usuario deberá utilizar la
+                plataforma de manera responsable y únicamente para
+                actividades permitidas.
+            </p>
+
+            <button
+                type="button"
+                class="boton-aceptar"
+                onclick="cerrarTerminos()"
+            >
+                Entendido
+            </button>
         </div>
     </div>
 
@@ -834,24 +977,98 @@
         });
     </script>
 
-    <!-- POLÍTICA DE PRIVACIDAD -->
+    <!-- VALIDACIÓN DEL FORMULARIO -->
+    <script>
+        const loginForm = document.getElementById("loginForm");
+        const usuarioLogin = document.getElementById("usuario");
+        const passwordLogin = document.getElementById("password");
+        const botonLogin = document.getElementById("botonLogin");
+        const mensajeUsuario = document.getElementById("mensajeUsuario");
+        const mensajePassword = document.getElementById("mensajePassword");
+        const mensajeGeneral = document.getElementById("mensaje");
+
+        function validarLogin() {
+            const usuarioValor = usuarioLogin.value.trim();
+            const usuarioCorrecto = usuarioValor.length >= 3;
+
+            if (usuarioValor === "") {
+                usuarioLogin.classList.remove("valido", "invalido");
+                mensajeUsuario.className = "estado-login";
+                mensajeUsuario.textContent = "";
+            } else if (!usuarioCorrecto) {
+                usuarioLogin.classList.remove("valido");
+                usuarioLogin.classList.add("invalido");
+                mensajeUsuario.className = "estado-login error";
+                mensajeUsuario.textContent = "El usuario debe tener al menos 3 caracteres. Ejemplo: Brenda123";
+            } else {
+                usuarioLogin.classList.remove("invalido");
+                usuarioLogin.classList.add("valido");
+                mensajeUsuario.className = "estado-login correcto";
+                mensajeUsuario.textContent = "✓ Usuario correctamente escrito";
+            }
+
+            const passwordValor = passwordLogin.value;
+            const passwordCorrecto = passwordValor.length >= 1 && passwordValor.length <= 8;
+
+            if (passwordValor === "") {
+                passwordLogin.classList.remove("valido", "invalido");
+                mensajePassword.className = "estado-login";
+                mensajePassword.textContent = "";
+            } else if (!passwordCorrecto) {
+                passwordLogin.classList.remove("valido");
+                passwordLogin.classList.add("invalido");
+                mensajePassword.className = "estado-login error";
+                mensajePassword.textContent = "La contraseña debe tener entre 1 y 8 caracteres.";
+            } else {
+                passwordLogin.classList.remove("invalido");
+                passwordLogin.classList.add("valido");
+                mensajePassword.className = "estado-login correcto";
+                mensajePassword.textContent = "✓ Contraseña correctamente escrita";
+            }
+
+            const todoCorrecto = usuarioCorrecto && passwordCorrecto;
+            botonLogin.disabled = !todoCorrecto;
+
+            return todoCorrecto;
+        }
+
+        usuarioLogin.addEventListener("input", validarLogin);
+        passwordLogin.addEventListener("input", validarLogin);
+        usuarioLogin.addEventListener("blur", validarLogin);
+        passwordLogin.addEventListener("blur", validarLogin);
+
+        loginForm.addEventListener("submit", function (event) {
+            if (!validarLogin()) {
+                event.preventDefault();
+                mensajeGeneral.textContent = "Completa correctamente todos los campos para iniciar sesión.";
+            }
+        });
+
+        validarLogin();
+    </script>
+
+    <!-- POLÍTICA DE PRIVACIDAD Y TÉRMINOS -->
     <script>
         function abrirPolitica() {
             document.getElementById("ventanaPolitica").style.display = "flex";
         }
-
         function cerrarPolitica() {
             document.getElementById("ventanaPolitica").style.display = "none";
         }
 
-        document.getElementById("ventanaPolitica").addEventListener(
-            "click",
-            function (event) {
-                if (event.target === this) {
-                    cerrarPolitica();
-                }
-            }
-        );
+        function abrirTerminos() {
+            document.getElementById("ventanaTerminos").style.display = "flex";
+        }
+        function cerrarTerminos() {
+            document.getElementById("ventanaTerminos").style.display = "none";
+        }
+
+        document.getElementById("ventanaPolitica").addEventListener("click", function (event) {
+            if (event.target === this) cerrarPolitica();
+        });
+        document.getElementById("ventanaTerminos").addEventListener("click", function (event) {
+            if (event.target === this) cerrarTerminos();
+        });
     </script>
 
 </body>

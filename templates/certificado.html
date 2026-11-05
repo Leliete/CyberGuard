@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Certificado | CyberGuard</title>
 
+<!-- FUENTES CYBERGUARD -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
 *{box-sizing:border-box}
 
@@ -19,7 +22,7 @@ display:flex;
 justify-content:center;
 align-items:center;
 padding:25px;
-font-family:serif;
+font-family:'Rajdhani',sans-serif;
 color:#fff;
 position:relative;
 overflow:hidden;
@@ -93,7 +96,6 @@ inset 0 0 40px rgba(0,120,255,.08);
 position:fixed;
 top:20px;
 right:20px;
-
 z-index:10;
 
 display:flex;
@@ -104,24 +106,21 @@ gap:8px;
 width:48px;
 height:48px;
 
-
 color:#fff;
-
-border:1px solid rgba(4, 69, 143, 0.8);
+border:1px solid rgba(4,69,143,.8);
 border-radius:30px;
 
 text-decoration:none;
 font-size:23px;
 
 box-shadow:
-0 0 10px rgba(67, 217, 237, 0.4),
-0 0 20px rgba(79, 174, 228, 0.15);
+0 0 10px rgba(67,217,237,.4),
+0 0 20px rgba(79,174,228,.15);
 
 transition:.25s;
 }
 
 .boton-salida:hover{
-
 transform:translateY(-2px) scale(1.05);
 
 box-shadow:
@@ -135,7 +134,6 @@ position:relative;
 z-index:5;
 
 width:min(94%,600px);
-
 padding:38px 45px 32px;
 
 text-align:center;
@@ -194,6 +192,7 @@ margin-bottom:8px;
 .encabezado h1{
 margin:0;
 
+font-family:'Orbitron',sans-serif;
 font-size:32px;
 font-weight:900;
 letter-spacing:5px;
@@ -208,6 +207,7 @@ text-shadow:
 .subtitulo{
 margin:8px 0 0;
 
+font-family:'Rajdhani',sans-serif;
 font-size:13px;
 letter-spacing:2px;
 text-transform:uppercase;
@@ -258,6 +258,7 @@ drop-shadow(0 0 12px rgba(22,140,255,.8));
 .felicidades{
 margin:8px 0;
 
+font-family:'Orbitron',sans-serif;
 font-size:25px;
 font-weight:bold;
 
@@ -272,6 +273,7 @@ margin:8px auto 18px;
 
 max-width:450px;
 
+font-family:'Rajdhani',sans-serif;
 color:#b9eaff;
 
 font-size:15px;
@@ -281,7 +283,6 @@ line-height:1.6;
 /* PUNTUACIÓN */
 .score-box{
 margin:18px auto;
-
 padding:18px 35px;
 
 width:100%;
@@ -308,6 +309,7 @@ display:block;
 
 margin-bottom:7px;
 
+font-family:'Rajdhani',sans-serif;
 font-size:11px;
 letter-spacing:1.8px;
 
@@ -316,6 +318,7 @@ text-transform:uppercase;
 }
 
 .score{
+font-family:'Rajdhani',sans-serif;
 font-size:27px;
 font-weight:900;
 
@@ -330,6 +333,7 @@ text-shadow:
 .estado{
 margin:17px 0;
 
+font-family:'Rajdhani',sans-serif;
 font-size:10px;
 letter-spacing:1.5px;
 
@@ -340,7 +344,6 @@ text-transform:uppercase;
 
 .estado::before{
 content:"●";
-
 margin-right:8px;
 
 color:#4dffb5;
@@ -352,11 +355,11 @@ text-shadow:
 /* PIE */
 .footer{
 margin-top:22px;
-
 padding-top:15px;
 
 border-top:1px solid rgba(114,207,255,.15);
 
+font-family:'Rajdhani',sans-serif;
 font-size:10px;
 letter-spacing:1.5px;
 
@@ -415,7 +418,7 @@ font-size:20px;
 
 <body>
 
-<!-- ADAPTADO: Botón de cerrar sesión con ruta de Flask -->
+<!-- BOTÓN CERRAR SESIÓN -->
 <a
 href="{{ url_for('logout') }}"
 class="boton-salida"
@@ -442,14 +445,12 @@ Plataforma de Seguridad Digital
 
 </header>
 
-<!-- LOGO -->
+<!-- LOGO ADAPTADO CON URL_FOR -->
 <div class="icono">
-<!-- ADAPTADO: Usando url_for para encontrar tu logo2.1.png en static -->
 <img
 src="{{ url_for('static', filename='logo2.1.png') }}"
 alt="Logo de CyberGuard"
 >
-
 </div>
 
 <h2 class="felicidades">
@@ -468,7 +469,6 @@ de seguridad digital.
 Tu puntuación
 </span>
 
-<!-- ADAPTADO: Variable de puntuación enviada desde Flask -->
 <div class="score">
 {{ puntuacion }} / 10
 </div>
