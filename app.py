@@ -119,9 +119,18 @@ def registro():
 @app.route('/evaluacion', methods=['GET', 'POST'])
 def evaluacion():
     if request.method == 'POST':
+        # RESPUESTAS CORRECTAS ACTUALIZADAS SEGÚN EL NUEVO ORDEN DE LAS OPCIONES
         respuestas_correctas = {
-            'p1': 'A', 'p2': 'A', 'p3': 'A', 'p4': 'A', 'p5': 'A',
-            'p6': 'A', 'p7': 'A', 'p8': 'A', 'p9': 'A', 'p10': 'A'
+            'p1': 'B',
+            'p2': 'C',
+            'p3': 'D',
+            'p4': 'A',
+            'p5': 'B',
+            'p6': 'C',
+            'p7': 'D',
+            'p8': 'A',
+            'p9': 'B',
+            'p10': 'C'
         }
         
         puntuacion = 0
