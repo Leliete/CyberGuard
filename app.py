@@ -6,7 +6,6 @@ pyodbc = __import__('pyodbc')
 app = Flask(__name__)
 
 # Llave de Fernet estrictamente fija y válida de 32 bytes en base64
-# Esto garantiza que la misma palabra siempre cifre igual y se pueda descifrar correctamente
 FERNET_KEY = b'Kk7y9R2vL5xP3mN1sQ8wZ4tA6bC0fD9gH2jK5lM8nB0='
 cipher = Fernet(FERNET_KEY)
 
@@ -33,7 +32,7 @@ def conectar_db():
     )
     return conexion
 
-# Inicializar tabla con columnas VARCHAR(MAX) para soportar cadenas cifradas largas
+# Inicializar tabla de usuarios con columnas de progreso
 def inicializar_db():
     conexion = conectar_db()
     cursor = conexion.cursor()
@@ -44,7 +43,9 @@ def inicializar_db():
             nombre VARCHAR(MAX) NOT NULL,
             usuario VARCHAR(MAX) NOT NULL,
             correo VARCHAR(MAX) NOT NULL,
-            password VARCHAR(255) NOT NULL
+            password VARCHAR(255) NOT NULL,
+            nivel_actual VARCHAR(50) DEFAULT 'diagnostico',
+            puntuacion_actual INT DEFAULT 0
         )
     ''')
     conexion.commit()
@@ -66,7 +67,6 @@ def login():
         usuarios_db = cursor.fetchall()
         conexion.close()
         
-        # Buscamos el usuario recorriendo la tabla y descifrando el campo de usuario
         usuario_encontrado = None
         for u in usuarios_db:
             usuario_descifrado = descifrar(u.usuario)
@@ -74,7 +74,6 @@ def login():
                 usuario_encontrado = u
                 break
         
-        # Verificamos la contraseña con Bcrypt
         if usuario_encontrado and bcrypt.checkpw(password_ingresada.encode('utf-8'), usuario_encontrado.password.encode('utf-8')):
             return redirect(url_for('evaluacion'))
         else:
@@ -93,23 +92,20 @@ def registro():
         if len(password_plana) < 8:
             return "<h1>Error</h1><p>La contraseña debe tener al menos 8 caracteres. <a href='/registro'>Intentar de nuevo</a></p>"
             
-        # Cifrar con Fernet
         nombre_cifrado = cifrar(nombre_plano)
         usuario_cifrado = cifrar(usuario_plano)
         correo_cifrado = cifrar(correo_plano)
         
-        # Hashear password con Bcrypt
         salt = bcrypt.gensalt()
         password_hashed = bcrypt.hashpw(password_plana.encode('utf-8'), salt).decode('utf-8')
             
         try:
             conexion = conectar_db()
             cursor = conexion.cursor()
-            cursor.execute('INSERT INTO usuarios (nombre, usuario, correo, password) VALUES (?, ?, ?, ?)',
-                           (nombre_cifrado, usuario_cifrado, correo_cifrado, password_hashed))
+            cursor.execute('INSERT INTO usuarios (nombre, usuario, correo, password, nivel_actual, puntuacion_actual) VALUES (?, ?, ?, ?, ?, ?)',
+                           (nombre_cifrado, usuario_cifrado, correo_cifrado, password_hashed, 'diagnostico', 0))
             conexion.commit()
             conexion.close()
-            # Redirección limpia hacia el login
             return redirect(url_for('login'))
         except Exception as e:
             return f"<h1>Error</h1><p>Hubo un error en la BD: {e}. <a href='/registro'>Intentar de nuevo</a></p>"
@@ -119,7 +115,6 @@ def registro():
 @app.route('/evaluacion', methods=['GET', 'POST'])
 def evaluacion():
     if request.method == 'POST':
-        # RESPUESTAS CORRECTAS ACTUALIZADAS SEGÚN EL NUEVO ORDEN DE LAS OPCIONES
         respuestas_correctas = {
             'p1': 'B',
             'p2': 'C',
@@ -139,29 +134,78 @@ def evaluacion():
             if request.form.get(pregunta) == respuestas_correctas[pregunta]:
                 puntuacion += 1
                 
-        if puntuacion <= 4:
-            nivel = "BÁSICO"
-        elif 5 <= puntuacion <= 7:
-            nivel = "INTERMEDIO"
-        else:
-            nivel = "AVANZADO"
-            
+        # LÓGICA DE SALTO DE NIVELES:
         if puntuacion >= 8:
+            # Sobresaliente: Salta directo al certificado final
             return redirect(url_for('certificado', puntuacion=puntuacion))
+        elif 5 <= puntuacion <= 7:
+            # Nivel Intermedio
+            return redirect(url_for('nivel_intermedio'))
+        else:
+            # Nivel Básico (1 a 4 aciertos)
+            return redirect(url_for('nivel_basico'))
+            
+    return render_template('Modulo de evaluacion.html')
+
+# ==========================================
+# RUTAS DE HISTORIAS Y NIVELES
+# ==========================================
+
+@app.route('/nivel/basico')
+def nivel_basico():
+    return render_template('historia_basico.html')
+
+@app.route('/evaluacion/basico', methods=['GET', 'POST'])
+def evaluacion_basico():
+    if request.method == 'POST':
+        respuestas_correctas_basico = {
+            'bp1': 'B',
+            'bp2': 'A',
+            'bp3': 'B',
+            'bp4': 'B',
+            'bp5': 'C',
+            'bp6': 'B',
+            'bp7': 'A',
+            'bp8': 'B',
+            'bp9': 'B',
+            'bp10': 'B'
+        }
+        
+        puntuacion = 0
+        for i in range(1, 11):
+            preq = f'bp{i}'
+            if request.form.get(preq) == respuestas_correctas_basico[preq]:
+                puntuacion += 1
+                
+        # Aprobatorio: de 8 a 10 aciertos
+        if puntuacion >= 8:
+            return redirect(url_for('certificado_basico'))
         else:
             return f"""
-            <div style="font-family: Arial; text-align: center; margin-top: 50px;">
-                <h1 style="color: #1a2a3a;">¡Evaluación Completada!</h1>
-                <p style="font-size: 18px;">Puntuación obtenida: <b>{puntuacion} / 10</b></p>
-                <p style="font-size: 20px; color: #007bff;">Tu nivel asignado es: <b>{nivel}</b></p>
-                <p>Necesitas al menos 8 aciertos para obtener tu certificado.</p>
+            <div style="font-family: 'Rajdhani', sans-serif; background: #061526; color: white; text-align: center; padding-top: 100px; min-height: 100vh;">
+                <h1 style="color: #ff4545; font-family: 'Orbitron', sans-serif;">Nivel Básico No Superado</h1>
+                <p style="font-size: 18px;">Obtuviste <b>{puntuacion} / 10</b> aciertos.</p>
+                <p>Necesitas al menos 8 aciertos para completar este nivel y obtener tu certificado.</p>
                 <br>
-                <a href="/evaluacion" style="padding: 10px 15px; background: #007bff; color: white; text-decoration: none; border-radius: 5px;">Reintentar evaluación</a>
-                <a href="/logout" style="padding: 10px 15px; background: #dc3545; color: white; text-decoration: none; border-radius: 5px; margin-left: 10px;">Cerrar sesión</a>
+                <a href="/evaluacion/basico" style="padding: 12px 25px; background: #087cff; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 16px;">Reintentar Evaluación</a>
+                <br><br><br>
+                <a href="/evaluacion" style="color: #72cfff; text-decoration: none; font-size: 14px;">🚪 Volver al Módulo Principal</a>
             </div>
             """
             
-    return render_template('Modulo de evaluacion.html')
+    return render_template('evaluacion_basico.html')
+
+@app.route('/certificado/basico')
+def certificado_basico():
+    return render_template('certificado_basico.html')
+
+@app.route('/nivel/intermedio')
+def nivel_intermedio():
+    return render_template('historia_intermedio.html')
+
+@app.route('/nivel/avanzado')
+def nivel_avanzado():
+    return render_template('historia_avanzado.html')
 
 @app.route('/certificado/<int:puntuacion>')
 def certificado(puntuacion):
@@ -173,5 +217,5 @@ def logout():
 
 if __name__ == '__main__':
     inicializar_db()
-    print("Iniciando servidor de CyberGuard con clave estática de Fernet...")
+    print("Iniciando servidor de CyberGuard...")
     app.run(debug=True)

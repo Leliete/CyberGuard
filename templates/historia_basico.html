@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nivel Básico: El Despertar Digital | CyberGuard</title>
+
+<!-- FUENTES CYBERGUARD -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+
+<style>
+*{box-sizing:border-box}
+body{
+    font-family:'Rajdhani',sans-serif;
+    margin:0;
+    padding:30px 20px;
+    min-height:100vh;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+        radial-gradient(circle at 15% 15%,rgba(120,190,255,.45),transparent 30%),
+        radial-gradient(circle at 85% 85%,rgba(0,75,160,.55),transparent 35%),
+        linear-gradient(135deg,#061526,#0b2b4d,#14517e,#1d6f9f,#0b355b,#030c18);
+}
+
+.card{
+    position:relative;
+    z-index:5;
+    background:linear-gradient(145deg,rgba(6,21,38,.97),rgba(11,43,77,.97));
+    padding:35px;
+    border-radius:14px;
+    width:750px;
+    max-width:100%;
+    border:1px solid rgba(114,207,255,.55);
+    box-shadow:0 0 25px rgba(0,120,220,.3), 0 15px 45px rgba(0,0,0,.45);
+}
+
+.card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:3px;
+    background:linear-gradient(90deg,transparent,#087cff,#72cfff,#087cff,transparent);
+}
+
+h1{
+    font-family:'Orbitron',sans-serif;
+    color:#eaf7ff;
+    text-align:center;
+    margin:5px 0;
+    letter-spacing:3px;
+    font-size:26px;
+    text-shadow:0 0 8px rgba(80,190,255,.75);
+}
+
+.subtitulo{
+    text-align:center;
+    color:#72cfff;
+    font-size:14px;
+    margin:5px 0 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ESTILO CÓMIC / VIÑETAS */
+.comic-panel{
+    background: rgba(4, 18, 32, 0.95);
+    border: 2px solid #39bfff;
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 15px;
+    box-shadow: inset 0 0 15px rgba(0,150,255,0.15), 0 0 10px rgba(0,119,255,0.2);
+    position: relative;
+}
+
+.comic-panel::after {
+    content: attr(data-viñeta);
+    position: absolute;
+    top: -10px;
+    left: 15px;
+    background: #087cff;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+}
+
+.comic-panel p {
+    margin: 8px 0;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #d8efff;
+}
+
+.dialogo {
+    color: #72cfff;
+    font-weight: bold;
+}
+
+.dialogo span {
+    color: #fff;
+}
+
+.botones{
+    display:flex;
+    gap:15px;
+    margin-top:25px;
+}
+
+.btn{
+    flex:1;
+    padding:12px;
+    text-align:center;
+    border-radius:6px;
+    font-weight:bold;
+    text-decoration:none;
+    cursor:pointer;
+    transition:0.3s;
+    font-size:15px;
+    font-family:'Rajdhani',sans-serif;
+}
+
+.btn-primario{
+    background:linear-gradient(135deg,#0a6ea8,#249bd1);
+    color:white;
+    border:1px solid #8cddff;
+    box-shadow:0 0 10px rgba(60,190,255,.3);
+}
+
+.btn-secundario{
+    background:transparent;
+    color:#72cfff;
+    border:1px solid rgba(114,207,255,.4);
+}
+
+.btn:hover{
+    filter:brightness(1.2);
+    transform:translateY(-2px);
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+    <h1>CYBERGUARD: CÓMIC INTERACTIVO</h1>
+    <p class="subtitulo">Episodio 1: El despertar en Neo-Ciudad y las llaves de cristal</p>
+    
+    <!-- VIÑETA 1 -->
+    <div class="comic-panel" data-viñeta="VIÑETA 01">
+        <p>Año 2077. Las calles de la metrópoli brillan bajo una lluvia de neón y hologramas parpadeantes. En su estación de trabajo, un joven analista recibe una alerta roja en su terminal holográfica.</p>
+        <p class="dialogo">IA de CyberGuard: <span>"¡Advertencia! Se ha detectado un intento de suplantación de identidad (Phishing) en el sector residencial. Los cortafuegos están débiles."</span></p>
+    </div>
+
+    <!-- VIÑETA 2 -->
+    <div class="comic-panel" data-viñeta="VIÑETA 02">
+        <p>El analista observa la pantalla principal. Los ciudadanos de Neo-Ciudad siguen usando contraseñas como <i>'123456'</i> o el nombre de sus mascotas en los implantes neurales, dejándoles el camino libre a los ciberdelincuentes.</p>
+        <p class="dialogo">Analista: <span>"Si no aseguramos los fundamentos de acceso, toda la red caerá en manos oscuras. Necesitamos fortificar las contraseñas y activar la doble autenticación (2FA) de inmediato."</span></p>
+    </div>
+
+    <!-- VIÑETA 3 -->
+    <div class="comic-panel" data-viñeta="VIÑETA 03">
+        <p>Tu misión en este nivel básico es simple pero vital: comprende cómo blindar una cuenta digital, detecta los anzuelos de los tramposos cibernéticos y prepárate para el examen del sector.</p>
+    </div>
+
+    <div class="botones">
+        <!-- Botón para regresar al menú principal -->
+        <a href="{{ url_for('evaluacion') }}" class="btn btn-secundario">🚪 Módulo Principal</a>
+        
+        <!-- Botón para ir al cuestionario del nivel básico -->
+        <a href="/evaluacion/basico" class="btn btn-primario">Ir al Cuestionario Básico ➔</a>
+    </div>
+</div>
+
+</body>
+</html>

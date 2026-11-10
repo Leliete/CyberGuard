@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluación Nivel Básico | CyberGuard</title>
+
+<!-- FUENTES CYBERGUARD -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+
+<style>
+*{box-sizing:border-box}
+body{
+    font-family:'Rajdhani',sans-serif;
+    margin:0;
+    padding:30px 20px;
+    min-height:100vh;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+        radial-gradient(circle at 15% 15%,rgba(120,190,255,.45),transparent 30%),
+        radial-gradient(circle at 85% 85%,rgba(0,75,160,.55),transparent 35%),
+        linear-gradient(135deg,#061526,#0b2b4d,#14517e,#1d6f9f,#0b355b,#030c18);
+}
+
+.card{
+    position:relative;
+    z-index:5;
+    background:linear-gradient(145deg,rgba(6,21,38,.97),rgba(11,43,77,.97));
+    padding:35px;
+    border-radius:14px;
+    width:750px;
+    max-width:100%;
+    border:1px solid rgba(114,207,255,.55);
+    box-shadow:0 0 25px rgba(0,120,220,.3), 0 15px 45px rgba(0,0,0,.45);
+}
+
+.card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:3px;
+    background:linear-gradient(90deg,transparent,#087cff,#72cfff,#087cff,transparent);
+}
+
+h1{
+    font-family:'Orbitron',sans-serif;
+    color:#eaf7ff;
+    text-align:center;
+    margin:5px 0;
+    letter-spacing:3px;
+    font-size:26px;
+    text-shadow:0 0 8px rgba(80,190,255,.75);
+}
+
+.subtitulo{
+    text-align:center;
+    color:#72cfff;
+    font-size:14px;
+    margin:5px 0 25px;
+}
+
+.pregunta-box{
+    background:rgba(5, 25, 45, 0.82);
+    padding:18px;
+    border-radius:8px;
+    margin-bottom:15px;
+    border-left:4px solid #72cfff;
+}
+
+.pregunta-box p{
+    color:#fff;
+    margin:0 0 10px;
+    font-size:16px;
+}
+
+label{
+    display:block;
+    margin:8px 0;
+    padding:6px;
+    font-size:14px;
+    color:#d8efff;
+    cursor:pointer;
+    border-radius:4px;
+    transition:0.2s;
+}
+
+label:hover{
+    background:rgba(114,207,255,0.15);
+    color:#fff;
+}
+
+input[type="radio"]{
+    accent-color:#087cff;
+    margin-right:8px;
+    cursor:pointer;
+}
+
+button[type="submit"]{
+    width:100%;
+    padding:13px;
+    margin-top:15px;
+    background:linear-gradient(135deg,#0a6ea8,#249bd1);
+    color:white;
+    border:1px solid #8cddff;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:16px;
+    font-family:'Rajdhani',sans-serif;
+    box-shadow:0 0 10px rgba(60,190,255,.3);
+    transition:0.3s;
+}
+
+button[type="submit"]:hover{
+    filter:brightness(1.2);
+    transform:translateY(-2px);
+}
+
+.acciones-inferiores {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.btn-volver {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    background: transparent;
+    color: #72cfff;
+    border: 1px solid rgba(114,207,255,.4);
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.btn-volver:hover {
+    background: rgba(114,207,255,0.1);
+    color: white;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+    <h1>EVALUACIÓN: NIVEL BÁSICO</h1>
+    <p class="subtitulo">Demuestra tu dominio de los fundamentos de seguridad digital (10 Preguntas)</p>
+
+    <form action="/evaluacion/basico" method="POST">
+
+        <!-- P1 -->
+        <div class="pregunta-box">
+            <p><b>1. ¿Cuál es una característica fundamental de una contraseña segura?</b></p>
+            <label><input type="radio" name="bp1" value="A" required> A) Usar tu fecha de nacimiento combinada con tu nombre.</label>
+            <label><input type="radio" name="bp1" value="B"> B) Combinar más de 8 caracteres, mayúsculas, minúsculas, números y símbolos.</label>
+            <label><input type="radio" name="bp1" value="C"> C) Usar palabras comunes del diccionario para recordarlas fácil.</label>
+        </div>
+
+        <!-- P2 -->
+        <div class="pregunta-box">
+            <p><b>2. ¿Qué técnica maliciosa utiliza correos falsos para engañar a los usuarios y robar sus credenciales?</b></p>
+            <label><input type="radio" name="bp2" value="A" required> A) Phishing.</label>
+            <label><input type="radio" name="bp2" value="B"> B) Copia de respaldo.</label>
+            <label><input type="radio" name="bp2" value="C"> C) Cifrado simétrico.</label>
+        </div>
+
+        <!-- P3 -->
+        <div class="pregunta-box">
+            <p><b>3. ¿Qué función principal cumple la autenticación de dos factores (2FA)?</b></p>
+            <label><input type="radio" name="bp3" value="A" required> A) Aumentar la velocidad de transferencia de datos.</label>
+            <label><input type="radio" name="bp3" value="B"> B) Añadir una capa extra de seguridad pidiendo una segunda forma de verificación.</label>
+            <label><input type="radio" name="bp3" value="C"> C) Compartir la cuenta de forma segura con amigos.</label>
+        </div>
+
+        <!-- P4 -->
+        <div class="pregunta-box">
+            <p><b>4. ¿Por qué representa un riesgo utilizar la misma contraseña en múltiples servicios o sitios web?</b></p>
+            <label><input type="radio" name="bp4" value="A" required> A) Porque consume más batería en el dispositivo.</label>
+            <label><input type="radio" name="bp4" value="B"> B) Porque si un sitio sufre una brecha de seguridad, todas tus demás cuentas quedan expuestas.</label>
+            <label><input type="radio" name="bp4" value="C"> C) No representa ningún riesgo si la contraseña es larga.</label>
+        </div>
+
+        <!-- P5 -->
+        <div class="pregunta-box">
+            <p><b>5. ¿Qué acción debes tomar inmediatamente ante un correo electrónico sospechoso con enlaces desconocidos?</b></p>
+            <label><input type="radio" name="bp5" value="A" required> A) Hacer clic en el enlace para verificar a dónde conduce.</label>
+            <label><input type="radio" name="bp5" value="B"> B) Reenviarlo a tus compañeros para advertirles abriendo el link.</label>
+            <label><input type="radio" name="bp5" value="C"> C) No hacer clic en los enlaces, reportarlo y eliminarlo.</label>
+        </div>
+
+        <!-- P6 -->
+        <div class="pregunta-box">
+            <p><b>6. ¿Cuál es el propósito de mantener el sistema operativo y las aplicaciones actualizadas?</b></p>
+            <label><input type="radio" name="bp6" value="A" required> A) Cambiar el diseño de los menús constantemente.</label>
+            <label><input type="radio" name="bp6" value="B"> B) Corregir vulnerabilidades de seguridad y parchar fallas descubiertas.</label>
+            <label><input type="radio" name="bp6" value="C"> C) Hacer que el equipo funcione más lento a propósito.</label>
+        </div>
+
+        <!-- P7 -->
+        <div class="pregunta-box">
+            <p><b>7. ¿Qué indica el protocolo HTTPS en la barra de direcciones de una página web?</b></p>
+            <label><input type="radio" name="bp7" value="A" required> A) Que la comunicación entre tu navegador y el sitio web está cifrada y es segura.</label>
+            <label><input type="radio" name="bp7" value="B"> B) Que el sitio web es totalmente gratuito y sin publicidad.</label>
+            <label><input type="radio" name="bp7" value="C"> C) Que el servidor web está ubicado en un país extranjero.</label>
+        </div>
+
+        <!-- P8 -->
+        <div class="pregunta-box">
+            <p><b>8. ¿Qué es una red Wi-Fi pública abierta y qué precaución se debe tener?</b></p>
+            <label><input type="radio" name="bp8" value="A" required> A) Es una red privada y cifrada donde puedes realizar transacciones bancarias sin problema.</label>
+            <label><input type="radio" name="bp8" value="B"> B) Es una red sin contraseña que puede ser insegura; se debe evitar enviar datos sensibles o usar una VPN.</label>
+            <label><input type="radio" name="bp8" value="C"> C) Es una red más rápida que la de tu hogar.</label>
+        </div>
+
+        <!-- P9 -->
+        <div class="pregunta-box">
+            <p><b>9. ¿Qué es la ingeniería social en el contexto de la ciberseguridad?</b></p>
+            <label><input type="radio" name="bp9" value="A" required> A) Una red social exclusiva para ingenieros en sistemas.</label>
+            <label><input type="radio" name="bp9" value="B"> B) El uso de técnicas de manipulación psicológica para engañar a las personas y obtener información.</label>
+            <label><input type="radio" name="bp9" value="C"> C) La programación de scripts automatizados para defensa de redes.</label>
+        </div>
+
+        <!-- P10 -->
+        <div class="pregunta-box">
+            <p><b>10. ¿Por qué es fundamental realizar copias de seguridad (backups) periódicas de tus archivos importantes?</b></p>
+            <label><input type="radio" name="bp10" value="A" required> A) Para liberar espacio de almacenamiento en el disco duro principal.</label>
+            <label><input type="radio" name="bp10" value="B"> B) Para protegerte ante pérdidas de información por fallos de hardware, borrados accidentales o ataques de ransomware.</label>
+            <label><input type="radio" name="bp10" value="C"> C) No son necesarias si usas una buena contraseña.</label>
+        </div>
+
+        <button type="submit">Enviar respuestas y evaluar Nivel Básico</button>
+
+    </form>
+
+    <div style="margin-top: 15px; text-align: center;">
+        <a href="{{ url_for('evaluacion') }}" class="btn-volver">🚪 Volver al Módulo Principal</a>
+    </div>
+</div>
+
+</body>
+</html>
